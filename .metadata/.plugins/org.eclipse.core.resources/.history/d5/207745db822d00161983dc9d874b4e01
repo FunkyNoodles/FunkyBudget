@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+
+<GridPane alignment="CENTER" hgap="10.0" vgap="10.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxmltableview.FXMLTableViewController">
+	<padding>
+		<Insets bottom="10.0" left="10.0" right="10.0" top="10.0"
+	</padding>
+</GridPane>
+

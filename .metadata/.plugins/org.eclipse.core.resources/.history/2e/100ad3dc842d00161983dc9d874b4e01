@@ -1,0 +1,14 @@
+package io.github.funkynoodles;
+
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+
+public class FXMLTableViewController {
+
+    @FXML
+    protected void addPerson(ActionEvent event) {
+    }
+}

@@ -1,0 +1,7 @@
+package io.github.funkynoodles;
+
+
+
+public class Main extends Application{
+
+}
