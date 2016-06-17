@@ -15,8 +15,8 @@ public class Main extends Application{
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		primaryStage.setTitle("Funky Budget");
-		Pane rootPane = (Pane)FXMLLoader.load(getClass().getResource("fxml_tableview.fxml"));
-		Scene scene = new Scene(rootPane);
+		Pane rootPane = (Pane)FXMLLoader.load(getClass().getResource("fxml_main.fxml"));
+		Scene scene = new Scene(rootPane, 1280, 720);
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
