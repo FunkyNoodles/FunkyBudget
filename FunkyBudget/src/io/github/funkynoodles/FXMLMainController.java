@@ -32,9 +32,9 @@ public class FXMLMainController {
     	try {
 			GridPane newAssetRoot = (GridPane)FXMLLoader.load(getClass().getResource("fxml_new_asset_window.fxml"));
 			newAssetStage.setScene(new Scene(newAssetRoot));
+			newAssetStage.initOwner(scene.getWindow());
 			newAssetStage.showAndWait();
-
-			assetVBox.getChildren().add(assetVBox.getChildren().size() - 1, (HBox)FXMLLoader.load(getClass().getResource("fxml_account_field.fxml")));
+			newAssetStage.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
