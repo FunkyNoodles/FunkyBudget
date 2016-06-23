@@ -1,7 +1,5 @@
 package io.github.funkynoodles;
 
-import java.util.ArrayList;
-
 public class TransferField {
 	// This class holds data for each money transaction
 	private int year;
@@ -9,14 +7,15 @@ public class TransferField {
 	private int day;
 	private double amount;
 	private String detail;
-	public ArrayList<Category> categories = new ArrayList<Category>();
+	private Category category;
 
-	public TransferField(int y, int m, int d, int amount, String detail){
+	public TransferField(int y, int m, int d, int amount, String detail, Category cat){
 		year = y;
 		month = m;
 		day = d;
 		this.setAmount(amount);
 		this.detail = detail;
+		setCategory(cat);
 	}
 
 	public int getYear() {
@@ -51,5 +50,13 @@ public class TransferField {
 	}
 	public void setDetail(String detail) {
 		this.detail = detail;
+	}
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
 	}
 }

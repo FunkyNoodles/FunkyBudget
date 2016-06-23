@@ -17,7 +17,7 @@
 		<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
 	</padding>
 	<children>
-		<Label fx:id="accountLabel" text="AccountName: " />
+		<Label text="AccountName: " />
 		<TextField text="Balance" />
 	</children>
 </HBox>

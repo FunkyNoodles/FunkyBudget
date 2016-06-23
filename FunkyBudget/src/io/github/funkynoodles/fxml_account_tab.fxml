@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<GridPane alignment="CENTER" hgap="10.0" vgap="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.funkynoodles.FXMLAccountTabController">
+      				    <padding>
+      				        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+      				    </padding>
+         				<children>
+
+         				    <Label style="-fx-font: NORMAL 20 Arial" text="Book" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+      <TableView GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+        <columns>
+          <TableColumn prefWidth="75.0" text="Date" />
+          <TableColumn prefWidth="200.0" text="Detail" />
+            <TableColumn prefWidth="75.0" text="Category" />
+            <TableColumn prefWidth="75.0" text="Deposit" />
+            <TableColumn prefWidth="100.0" text="Withdrawl" />
+            <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Balance" />
+        </columns>
+      </TableView>
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                           <children>
+                              <DatePicker fx:id="datePicker" promptText="Date" />
+                              <TextField fx:id="amountText" prefHeight="31.0" prefWidth="100.0" promptText="Amount" HBox.hgrow="NEVER">
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                                 <padding>
+                                    <Insets left="10.0" />
+                                 </padding>
+                              </TextField>
+            <TextField fx:id="detailsText" prefHeight="31.0" promptText="Details" HBox.hgrow="ALWAYS" />
+                              <Button alignment="CENTER" maxWidth="100.0" mnemonicParsing="false" onAction="#handleAddButton" prefWidth="100.0" text="Add" />
+                           </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+                        </HBox>
+         </children>
+                     <columnConstraints>
+                        <ColumnConstraints />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                     </rowConstraints>
+   <cursor>
+      <Cursor fx:constant="DEFAULT" />
+   </cursor>
+</GridPane>

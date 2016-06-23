@@ -19,8 +19,8 @@
    <children>
       <Label alignment="CENTER" text="Asset Name" GridPane.halignment="CENTER" />
       <Label alignment="CENTER" contentDisplay="CENTER" text="Asset Type" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-      <TextField alignment="CENTER" GridPane.columnIndex="1" />
-      <ChoiceBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <TextField fx:id="newAssetName" alignment="CENTER" GridPane.columnIndex="1" />
+      <ChoiceBox fx:id="newAssetType" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleCancelButton" text="Cancel" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
       <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleCreateButton" text="Create" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
    </children>
