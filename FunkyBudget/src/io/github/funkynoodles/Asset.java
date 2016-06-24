@@ -7,7 +7,7 @@ public class Asset {
 	private String name;
 	private AssetType type;
 	private int balance = 0;
-	public ArrayList<TransferField> tran = new ArrayList<TransferField>();
+	public ArrayList<TransferField> transferField = new ArrayList<TransferField>();
 
 	public Asset(){
 		balance = 0;
@@ -17,6 +17,10 @@ public class Asset {
 		this.name = name;
 		this.type = type;
 		balance = 0;
+	}
+
+	public void insert(TransferField tf){
+		transferField.add(tf);
 	}
 
 	public String getName() {

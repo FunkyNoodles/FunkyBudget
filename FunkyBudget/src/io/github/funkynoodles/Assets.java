@@ -3,22 +3,22 @@ package io.github.funkynoodles;
 import java.util.ArrayList;
 
 public class Assets {
-	private ArrayList<Asset> accountList = new ArrayList<Asset>();
+	private ArrayList<Asset> assettList = new ArrayList<Asset>();
 
 	public int size(){
-		return accountList.size();
+		return assettList.size();
 	}
 
 	public void insert(Asset account){
-		accountList.add(account);
+		assettList.add(account);
 	}
 
-	public ArrayList<Asset> getAccountList() {
-		return accountList;
+	public ArrayList<Asset> getAssetsList() {
+		return assettList;
 	}
 
-	public void setAccountList(ArrayList<Asset> accountList) {
-		this.accountList = accountList;
+	public void setAssetsList(ArrayList<Asset> accountList) {
+		this.assettList = accountList;
 	}
 
 }

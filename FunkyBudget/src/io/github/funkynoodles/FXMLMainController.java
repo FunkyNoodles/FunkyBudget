@@ -38,14 +38,6 @@ public class FXMLMainController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-    	/*Button btn = (Button) event.getSource();
-    	Scene scene = btn.getScene();
-    	VBox assetVBox = (VBox)scene.lookup("#assetVBox");
-    	try {
-			assetVBox.getChildren().add(assetVBox.getChildren().size() - 1, (HBox)FXMLLoader.load(getClass().getResource("fxml_account_field.fxml")));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}*/
     }
 
     @FXML
@@ -54,8 +46,9 @@ public class FXMLMainController {
        if (event instanceof KeyEvent)
        {
           final KeyEvent keyEvent = (KeyEvent) event;
-          if (keyEvent.isControlDown() && keyEvent.getCode() == KeyCode.A)
+          if (keyEvent.isControlDown() && keyEvent.getCode() == KeyCode.Q)
           {
+        	  Platform.exit();
           }
        }
     }

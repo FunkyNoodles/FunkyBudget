@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 
 public class Main extends Application{
 
+	public static Assets assets = new Assets();
 	public static void main(String[] args){
 		launch(args);
 	}

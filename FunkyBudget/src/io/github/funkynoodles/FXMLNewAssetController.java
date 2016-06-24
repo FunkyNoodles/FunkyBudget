@@ -9,13 +9,15 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -44,8 +46,13 @@ public class FXMLNewAssetController {
 			errorBox.showAndWait();
 		}else{
 	    	Asset newAccount = new Asset(assetName, AssetType.BANK_CHECKINGS);
+	    	SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
+
 	    	try {
-				assetVBox.getChildren().add(assetVBox.getChildren().size() - 1, (HBox)FXMLLoader.load(getClass().getResource("fxml_account_field.fxml")));
+	    		HBox assetField = (HBox)FXMLLoader.load(getClass().getResource("fxml_account_field.fxml"));
+	    		((Label)assetField.getChildren().get(0)).setText(assetName);
+	    		((TextField)assetField.getChildren().get(1)).setText("0.00");
+				assetVBox.getChildren().add(assetVBox.getChildren().size() - 1, assetField);
 				newTab.setText(assetName);
 
 				GridPane tabContent = (GridPane)FXMLLoader.load(getClass().getResource("fxml_account_tab.fxml"));
@@ -58,8 +65,16 @@ public class FXMLNewAssetController {
 				TableColumn depositCol = (TableColumn)tableView.getColumns().get(3);
 				TableColumn withdrawlCol = (TableColumn)tableView.getColumns().get(4);
 				TableColumn balanceCol = (TableColumn)tableView.getColumns().get(5);
-				dateCol.setCellValueFactory(new PropertyValueFactory<TransferField, DatePicker>(assetName));
+
 				tabPane.getTabs().add(newTab);
+				selectionModel.select(newTab);
+
+				// Populate choice box
+				ChoiceBox<String> choiceBox = (ChoiceBox<String>)((HBox)tabContent.getChildren().get(2)).getChildren().get(3);
+				CategoryUtils.populateCategoryChoiceBox(choiceBox, newAccount);
+
+				Main.assets.insert(newAccount);
+
 				stage.hide();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
