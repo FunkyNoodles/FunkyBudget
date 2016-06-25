@@ -44,42 +44,56 @@ public class FXMLNewAssetController {
 			errorBox.setHeaderText("Invalid Information");
 			errorBox.setContentText("Please Enter Valid Information");
 			errorBox.showAndWait();
-		}else{
-	    	Asset newAccount = new Asset(assetName, AssetType.BANK_CHECKINGS);
-	    	SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
+			return;
+		}
+    	if (Main.isNameTaken(assetName)){
+			Alert errorBox = new Alert(AlertType.ERROR);
+			errorBox.setTitle("Error");
+			errorBox.setHeaderText("Asset Name Taken");
+			errorBox.setContentText("Please Enter Another Asset Name");
+			errorBox.showAndWait();
+			return;
+		}
+    	Asset newAsset = new Asset(assetName, AssetType.BANK_CHECKINGS);
+    	SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
 
-	    	try {
-	    		HBox assetField = (HBox)FXMLLoader.load(getClass().getResource("fxml_account_field.fxml"));
-	    		((Label)assetField.getChildren().get(0)).setText(assetName);
-	    		((TextField)assetField.getChildren().get(1)).setText("0.00");
-				assetVBox.getChildren().add(assetVBox.getChildren().size() - 1, assetField);
-				newTab.setText(assetName);
+    	try {
+    		HBox assetField = (HBox)FXMLLoader.load(getClass().getResource("fxml_account_field.fxml"));
+    		((Label)assetField.getChildren().get(0)).setText(assetName);
+    		((TextField)assetField.getChildren().get(1)).setText("0.00");
+			assetVBox.getChildren().add(assetVBox.getChildren().size() - 1, assetField);
+			newTab.setText(assetName);
 
-				GridPane tabContent = (GridPane)FXMLLoader.load(getClass().getResource("fxml_account_tab.fxml"));
-				newTab.setContent(tabContent);
-				newTab.setId("tab" + assetName);
-				TableView<TransferField> tableView = (TableView<TransferField>)tabContent.getChildren().get(1);
-				TableColumn<TransferField, DatePicker> dateCol = (TableColumn<TransferField, DatePicker>)tableView.getColumns().get(0);
-				TableColumn detailCol = (TableColumn)tableView.getColumns().get(1);
-				TableColumn categoryCol = (TableColumn)tableView.getColumns().get(2);
-				TableColumn depositCol = (TableColumn)tableView.getColumns().get(3);
-				TableColumn withdrawlCol = (TableColumn)tableView.getColumns().get(4);
-				TableColumn balanceCol = (TableColumn)tableView.getColumns().get(5);
+			GridPane tabContent = (GridPane)FXMLLoader.load(getClass().getResource("fxml_account_tab.fxml"));
+			newTab.setContent(tabContent);
+			newTab.setId("tab" + assetName);
 
-				tabPane.getTabs().add(newTab);
-				selectionModel.select(newTab);
 
-				// Populate choice box
-				ChoiceBox<String> choiceBox = (ChoiceBox<String>)((HBox)tabContent.getChildren().get(2)).getChildren().get(3);
-				CategoryUtils.populateCategoryChoiceBox(choiceBox, newAccount);
+			// Populate choice box
+			ChoiceBox<String> choiceBox = (ChoiceBox<String>)((HBox)tabContent.getChildren().get(2)).getChildren().get(3);
+			CategoryUtils.populateCategoryChoiceBox(choiceBox, newAsset);
 
-				Main.assets.insert(newAccount);
+			Main.assets.insert(newAsset);
 
-				stage.hide();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			TableView<TransferField> tableView = (TableView<TransferField>)tabContent.getChildren().get(1);
+			TableColumn<TransferField, String> dateCol = (TableColumn<TransferField, String>)tableView.getColumns().get(0);
+			TableColumn detailCol = (TableColumn)tableView.getColumns().get(1);
+			TableColumn categoryCol = (TableColumn)tableView.getColumns().get(2);
+			TableColumn depositCol = (TableColumn)tableView.getColumns().get(3);
+			TableColumn withdrawlCol = (TableColumn)tableView.getColumns().get(4);
+			TableColumn balanceCol = (TableColumn)tableView.getColumns().get(5);
+
+			int assetIndex = Main.findAssetIndexByName(assetName);
+
+			tableView.setItems(Main.assets.getAssetsList().get(assetIndex).observableTransferField);
+
+			tabPane.getTabs().add(newTab);
+			selectionModel.select(newTab);
+
+			stage.hide();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
     }
 

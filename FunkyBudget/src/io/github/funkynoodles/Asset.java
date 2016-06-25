@@ -2,12 +2,16 @@ package io.github.funkynoodles;
 
 import java.util.ArrayList;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 public class Asset {
 	// Asset class
 	private String name;
 	private AssetType type;
 	private int balance = 0;
 	public ArrayList<TransferField> transferField = new ArrayList<TransferField>();
+	public ObservableList<TransferField> observableTransferField = FXCollections.observableArrayList();
 
 	public Asset(){
 		balance = 0;
@@ -21,6 +25,7 @@ public class Asset {
 
 	public void insert(TransferField tf){
 		transferField.add(tf);
+		observableTransferField.add(tf);
 	}
 
 	public String getName() {
@@ -44,4 +49,5 @@ public class Asset {
 	public void addBalance(int amount){
 		this.balance += amount;
 	}
+
 }

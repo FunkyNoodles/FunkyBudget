@@ -19,12 +19,12 @@
          				    <Label style="-fx-font: NORMAL 20 Arial" text="Book" GridPane.columnIndex="0" GridPane.rowIndex="0" />
       <TableView GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
         <columns>
-          <TableColumn prefWidth="75.0" text="Date" />
+          <TableColumn prefWidth="100.0" text="Date" />
           <TableColumn prefWidth="200.0" text="Detail" />
-            <TableColumn prefWidth="75.0" text="Category" />
-            <TableColumn prefWidth="75.0" text="Deposit" />
+            <TableColumn prefWidth="250.0" text="Category" />
+            <TableColumn prefWidth="100.0" text="Deposit" />
             <TableColumn prefWidth="100.0" text="Withdrawl" />
-            <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Balance" />
+            <TableColumn editable="false" prefWidth="150.0" sortable="false" text="Balance" />
         </columns>
       </TableView>
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
@@ -39,7 +39,7 @@
                                  </padding>
                               </TextField>
             <TextField fx:id="detailsText" prefHeight="31.0" promptText="Details" HBox.hgrow="ALWAYS" />
-            <ChoiceBox prefWidth="150.0" >
+            <ChoiceBox prefWidth="150.0">
             </ChoiceBox>
                               <Button alignment="CENTER" maxWidth="100.0" mnemonicParsing="false" onAction="#handleAddButton" prefWidth="100.0" text="Add" />
                            </children>

@@ -17,6 +17,25 @@ public class Main extends Application{
 		launch(args);
 	}
 
+	public static int findAssetIndexByName(String name){
+		for (int i = 0; i < assets.size(); i++) {
+			if (assets.getAssetsList().get(i).getName() == name) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	public static boolean isNameTaken(String name){
+		for (int i = 0; i < assets.size(); i++) {
+			if (assets.getAssetsList().get(i).getName().equals(name)) {
+
+				return true;
+			}
+		}
+		return false;
+	}
+
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		primaryStage.setTitle("Funky Budget");
