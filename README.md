@@ -1,2 +1,2 @@
 # FunkyBudget
-A personal budget/book-keeping software
+A personal budget software
