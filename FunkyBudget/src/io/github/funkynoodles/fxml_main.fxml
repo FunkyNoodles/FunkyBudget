@@ -11,9 +11,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.funkynoodles.FXMLMainController">
+<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.funkynoodles.FXMLMainController" onKeyPressed="#handleKeyInput">
    <children>
-       <MenuBar fx:id="menuBar" onKeyPressed="#handleKeyInput">
+       <MenuBar fx:id="menuBar" >
        	<menus>
        		<Menu text="File">
                <items>
@@ -46,7 +46,7 @@
        <TabPane fx:id="tabPane">
 
    		<tabs>
-   			<Tab fx:id="tabAsset" text="Assets">
+   			<Tab fx:id="rootTabAsset" closable="false" text="Assets">
                <content>
                   <VBox fx:id="assetVBox" prefHeight="200.0" prefWidth="100.0">
                   	<padding>
@@ -61,11 +61,7 @@
                         <Button fx:id="newAssetButton" mnemonicParsing="false" onAction="#handleNewAssetButton" prefHeight="31.0" prefWidth="125.0" text="New..." />
                      </children></VBox>
                </content></Tab>
-
    		</tabs>
-
-
-
        </TabPane>
    </children>
 

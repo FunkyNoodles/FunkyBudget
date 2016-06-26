@@ -15,8 +15,8 @@
 		<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
 	</padding>
 	<children>
-		<Label text="AccountName: " />
-		<TextField editable="false" text="Balance" />
+		<Label prefHeight="31.0" prefWidth="140.0" text="AccountName: " />
+		<TextField editable="false" prefHeight="31.0" prefWidth="187.0" text="Balance" />
     	<Button mnemonicParsing="false" onAction="#handleEditButton" text="Edit" />
 	</children>
 </HBox>

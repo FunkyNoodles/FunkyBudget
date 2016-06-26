@@ -65,6 +65,8 @@ public class FXMLNewAssetController {
 			newTab.setText(assetName);
 
 			GridPane tabContent = (GridPane)FXMLLoader.load(getClass().getResource("fxml_account_tab.fxml"));
+			HBox topHBox = (HBox)tabContent.getChildren().get(0);
+			((Label)topHBox.getChildren().get(0)).setText(assetName);
 			newTab.setContent(tabContent);
 			newTab.setId("tab" + assetName);
 
@@ -89,6 +91,8 @@ public class FXMLNewAssetController {
 
 			tabPane.getTabs().add(newTab);
 			selectionModel.select(newTab);
+
+			Main.changed = true;
 
 			stage.hide();
 		} catch (IOException e) {

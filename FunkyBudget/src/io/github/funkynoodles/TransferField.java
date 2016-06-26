@@ -17,6 +17,7 @@ public class TransferField {
 	private SimpleStringProperty categoryStr = new SimpleStringProperty();
 	private SimpleStringProperty depositStr = new SimpleStringProperty();
 	private SimpleStringProperty withdrawlStr = new SimpleStringProperty();
+	private SimpleStringProperty balanceStr = new SimpleStringProperty();
 
 	public TransferField(LocalDate d, double amountNum, String detail, Category cat){
 		date = d;
@@ -26,8 +27,16 @@ public class TransferField {
 		this.setAmount(amountNum);
 		String amountString = Double.toString(amountNum);
 		int decimalIndex = amountString.indexOf(".");
+
+		// Handle when the number is too big and in exponential form
+		// I wish I had enough money to be expressed in exponential form
+		int eIndex = amountString.indexOf("E");
+		String eStr = "";
+		if (eIndex != -1) {
+			eStr = amountString.substring(eIndex);
+		}
 		if (amountString.length() >= decimalIndex + 3) {
-			amountString = amountString.substring(0,decimalIndex + 3);
+			amountString = amountString.substring(0,decimalIndex + 3) + eStr;;
 		}
 		if(amountNum > 0){
 			depositStr.setValue(amountString);
@@ -114,5 +123,24 @@ public class TransferField {
 
 	public void setCurrentBalance(double currentBalance) {
 		this.currentBalance = currentBalance;
+	}
+
+	public String getBalanceStr() {
+		String str = balanceStr.get();
+		str = Double.toString(currentBalance);
+		int eIndex = str.indexOf("E");
+		String eStr = "";
+		if (eIndex != -1) {
+			eStr = str.substring(eIndex);
+		}
+		int decimalIndex = str.indexOf(".");
+		if (str.length() >= decimalIndex + 3) {
+			str = str.substring(0,decimalIndex + 3) + eStr;
+		}
+		return str;
+	}
+
+	public void setBalanceStr(SimpleStringProperty balanceStr) {
+		this.balanceStr = balanceStr;
 	}
 }

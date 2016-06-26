@@ -2,8 +2,6 @@ package io.github.funkynoodles;
 
 import java.time.LocalDate;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -12,6 +10,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
@@ -23,9 +22,11 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 public class FXMLAccountTabController {
 
+	@SuppressWarnings("unchecked")
 	@FXML
     protected void handleAddButton(final ActionEvent event) {
 		Button btn = (Button)event.getSource();
@@ -81,6 +82,7 @@ public class FXMLAccountTabController {
     	int assetIndex = Main.findAssetIndexByName(tabName);
     	asset = Main.assets.getAssetsList().get(assetIndex);
     	asset.insert(tf);
+    	asset.setBalance(tf.getCurrentBalance());
 
     	GridPane tabContent = (GridPane)tab.getContent();
     	TableView<TransferField> tableView = (TableView<TransferField>)tabContent.getChildren().get(1);
@@ -96,7 +98,34 @@ public class FXMLAccountTabController {
 		categoryCol.setCellValueFactory(new PropertyValueFactory<TransferField, String>("categoryStr"));
 		depositCol.setCellValueFactory(new PropertyValueFactory<TransferField, String>("depositStr"));
 		withdrawlCol.setCellValueFactory(new PropertyValueFactory<TransferField, String>("withdrawlStr"));
+		balanceCol.setCellValueFactory(new PropertyValueFactory<TransferField, String>("balanceStr"));
 
+		// Update balance on home tab and top
+		Tab tabAsset = null;
+		for (int i = 0; i < tabPane.getTabs().size(); i++) {
+			if(tabPane.getTabs().get(i).getId().compareTo("rootTabAsset") == 0){
+				System.out.println("boooo");
+				tabAsset = tabPane.getTabs().get(i);
+				break;
+			}
+		}
+		VBox rootTabVBox = (VBox)tabAsset.getContent();
+		HBox accountFieldHBox = null;
+		Label accountFieldLabel = null;
+		TextField accountFieldTextField = null;
+		for (int i = 1; i < rootTabVBox.getChildren().size() - 1; i++) {
+			accountFieldHBox = (HBox)rootTabVBox.getChildren().get(i);
+			accountFieldLabel = (Label)accountFieldHBox.getChildren().get(0);
+			if(accountFieldLabel.getText() == tabName){
+				accountFieldTextField = (TextField) accountFieldHBox.getChildren().get(1);
+				accountFieldTextField.setText(asset.getBalanceStr());
+			}
+		}
+		HBox topHBox = (HBox)tabContent.getChildren().get(0);
+		TextField topBalanceTextField = (TextField)topHBox.getChildren().get(1);
+		topBalanceTextField.setText(asset.getBalanceStr());
+
+		Main.changed = true;
     }
 
 	@FXML

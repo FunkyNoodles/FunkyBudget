@@ -19,7 +19,7 @@ import javafx.stage.Stage;
 public class FXMLMainController {
     @FXML
     protected void handleExitAction(final ActionEvent event) {
-    	Platform.exit();
+    	Main.exit();
     }
 
     @FXML
@@ -28,7 +28,6 @@ public class FXMLMainController {
     	newAssetStage.setTitle("New Asset");
     	Button btn = (Button) event.getSource();
     	Scene scene = btn.getScene();
-    	VBox assetVBox = (VBox)scene.lookup("#assetVBox");
     	try {
 			GridPane newAssetRoot = (GridPane)FXMLLoader.load(getClass().getResource("fxml_new_asset_window.fxml"));
 			newAssetStage.setScene(new Scene(newAssetRoot));
@@ -48,7 +47,7 @@ public class FXMLMainController {
           final KeyEvent keyEvent = (KeyEvent) event;
           if (keyEvent.isControlDown() && keyEvent.getCode() == KeyCode.Q)
           {
-        	  Platform.exit();
+        	  Main.exit();
           }
        }
     }

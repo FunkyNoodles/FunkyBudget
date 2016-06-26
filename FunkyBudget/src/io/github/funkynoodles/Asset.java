@@ -9,7 +9,7 @@ public class Asset {
 	// Asset class
 	private String name;
 	private AssetType type;
-	private int balance = 0;
+	private double balance = 0;
 	public ArrayList<TransferField> transferField = new ArrayList<TransferField>();
 	public ObservableList<TransferField> observableTransferField = FXCollections.observableArrayList();
 
@@ -24,6 +24,11 @@ public class Asset {
 	}
 
 	public void insert(TransferField tf){
+		if (transferField.size() == 0) {
+			tf.setCurrentBalance(tf.getAmount());
+		}else{
+			tf.setCurrentBalance(transferField.get(transferField.size() - 1).getCurrentBalance() + tf.getAmount());
+		}
 		transferField.add(tf);
 		observableTransferField.add(tf);
 	}
@@ -40,10 +45,23 @@ public class Asset {
 	public void setType(AssetType type) {
 		this.type = type;
 	}
-	public int getBalance() {
+	public double getBalance() {
 		return balance;
 	}
-	public void setBalance(int balance) {
+	public String getBalanceStr(){
+		String str = Double.toString(balance);
+		int eIndex = str.indexOf("E");
+		String eStr = "";
+		if (eIndex != -1) {
+			eStr = str.substring(eIndex);
+		}
+		int decimalIndex = str.indexOf(".");
+		if (str.length() >= decimalIndex + 3) {
+			str = str.substring(0,decimalIndex + 3) + eStr;
+		}
+		return str;
+	}
+	public void setBalance(double balance) {
 		this.balance = balance;
 	}
 	public void addBalance(int amount){
