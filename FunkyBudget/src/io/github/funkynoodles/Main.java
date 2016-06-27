@@ -1,5 +1,12 @@
 package io.github.funkynoodles;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+
+import com.google.gson.Gson;
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -9,6 +16,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.Pane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -17,6 +25,8 @@ public class Main extends Application{
 	public static Assets assets = new Assets();
 
 	public static boolean changed = false;
+
+	public static String workingFileLocation = "";
 
 	public static int findAssetIndexByName(String name){
 		for (int i = 0; i < assets.size(); i++) {
@@ -27,12 +37,40 @@ public class Main extends Application{
 		return -1;
 	}
 
+	public static void saveAll(){
+		Gson gson = new Gson();
+		//String str = gson.toJson(assets);
+		if (workingFileLocation.equals("")) {
+			// Choose a file to save
+			FileChooser fileChooser = new FileChooser();
+			fileChooser.setTitle("Save As");
+			fileChooser.getExtensionFilters().addAll(
+				new FileChooser.ExtensionFilter("All Files", "*.*"),
+				new FileChooser.ExtensionFilter("JSON", "*.json")
+			);
+			File file = fileChooser.showSaveDialog(null);
+			if (filSystem.out.println(str);e != null) {
+				workingFileLocation = file.getAbsolutePath();
+			}else{
+				return;
+			}
+		}
+		try {
+			Writer writer = new FileWriter(workingFileLocation);
+			gson.toJson(assets, writer);
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		//System.out.println(str);
+	}
+
 	public static boolean exit(){
 		if(Main.changed){
 			// Prompt save option
 			Alert saveWindow = new Alert(AlertType.WARNING);
 			saveWindow.setTitle("Funky Budget");
-			saveWindow.setHeaderText("Do you want to save any changed made?");
+			saveWindow.setHeaderText("Do you want to save any changes made?");
 			saveWindow.setContentText("Your changes will be lost you don't save them.");
 
 			ButtonType save = new ButtonType("Save");

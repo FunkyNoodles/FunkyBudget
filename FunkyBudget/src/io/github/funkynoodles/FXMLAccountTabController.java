@@ -104,7 +104,6 @@ public class FXMLAccountTabController {
 		Tab tabAsset = null;
 		for (int i = 0; i < tabPane.getTabs().size(); i++) {
 			if(tabPane.getTabs().get(i).getId().compareTo("rootTabAsset") == 0){
-				System.out.println("boooo");
 				tabAsset = tabPane.getTabs().get(i);
 				break;
 			}

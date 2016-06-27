@@ -49,6 +49,10 @@ public class FXMLMainController {
           {
         	  Main.exit();
           }
+          if (keyEvent.isControlDown() && keyEvent.getCode() == KeyCode.S)
+          {
+        	  Main.saveAll();
+          }
        }
     }
 }
