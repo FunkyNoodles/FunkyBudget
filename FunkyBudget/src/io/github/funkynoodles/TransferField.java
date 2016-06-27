@@ -20,6 +20,14 @@ public class TransferField {
 	private SimpleStringProperty balanceStr = new SimpleStringProperty();
 
 	public TransferField(LocalDate d, double amountNum, String detail, Category cat){
+		setTransferField(d, amountNum, detail, cat, 0.0);
+	}
+
+	public TransferField(SaveTransferField stf){
+		setTransferField(stf.getDate(), stf.getAmount(), stf.getDetail(), stf.getCategory(), stf.getCurrentBalance());
+	}
+
+	private void setTransferField(LocalDate d, double amountNum, String detail, Category cat, double cb) {
 		date = d;
 		dateStr.setValue(date.toString());
 		this.detail = detail;
@@ -46,6 +54,8 @@ public class TransferField {
 		}
 		setCategory(cat);
 		categoryStr.setValue(CategoryUtils.toString(cat));
+		setCurrentBalance(cb);
+		balanceStr.setValue(getBalanceStr());
 	}
 
 	public LocalDate getDate() {

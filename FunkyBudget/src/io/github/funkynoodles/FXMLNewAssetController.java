@@ -37,7 +37,6 @@ public class FXMLNewAssetController {
     	Tab newTab = new Tab();
     	String assetName = ((TextField)scene.lookup("#newAssetName")).getText();
 
-    	//String assetType = ((ChoiceBox)scene.lookup("#newAssetType")).getValue().toString();
     	if (assetName.isEmpty() ){//|| assetType.isEmpty()) {
 			Alert errorBox = new Alert(AlertType.ERROR);
 			errorBox.setTitle("Error");
@@ -70,7 +69,6 @@ public class FXMLNewAssetController {
 			newTab.setContent(tabContent);
 			newTab.setId("tab" + assetName);
 
-
 			// Populate choice box
 			ChoiceBox<String> choiceBox = (ChoiceBox<String>)((HBox)tabContent.getChildren().get(2)).getChildren().get(3);
 			CategoryUtils.populateCategoryChoiceBox(choiceBox, newAsset);
@@ -87,7 +85,7 @@ public class FXMLNewAssetController {
 
 			int assetIndex = Main.findAssetIndexByName(assetName);
 
-			tableView.setItems(Main.assets.getAssetsList().get(assetIndex).observableTransferField);
+			tableView.setItems(Main.assets.getAssetsList().get(assetIndex).getObservableTransferField());
 
 			tabPane.getTabs().add(newTab);
 			selectionModel.select(newTab);
@@ -96,8 +94,6 @@ public class FXMLNewAssetController {
 
 			stage.hide();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
     }
 

@@ -1,8 +1,8 @@
 package io.github.funkynoodles;
 
+import java.io.File;
 import java.io.IOException;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,8 +12,6 @@ import javafx.scene.input.InputEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class FXMLMainController {
@@ -52,6 +50,9 @@ public class FXMLMainController {
           if (keyEvent.isControlDown() && keyEvent.getCode() == KeyCode.S)
           {
         	  Main.saveAll();
+          }
+          if(keyEvent.isControlDown() && keyEvent.getCode() == KeyCode.O){
+        	  Main.loadAll();
           }
        }
     }

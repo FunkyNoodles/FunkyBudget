@@ -2,19 +2,26 @@ package io.github.funkynoodles;
 
 import java.io.IOException;
 
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
 public class FXMLAccountFieldController {
 
+	@SuppressWarnings("unchecked")
 	@FXML
 	protected void handleEditButton(final ActionEvent event){
 		Button btn = (Button)event.getSource();
@@ -35,9 +42,38 @@ public class FXMLAccountFieldController {
 		GridPane tabContent;
 		try {
 			tabContent = (GridPane)FXMLLoader.load(getClass().getResource("fxml_account_tab.fxml"));
-			// TODO load save files
 			newTab.setContent(tabContent);
-			newTab.setId("tab" + assetName);
+
+			int assetIndex = Main.findAssetIndexByName(assetName);
+
+			HBox topHBox = (HBox)tabContent.getChildren().get(0);
+			((Label)topHBox.getChildren().get(0)).setText(assetName);
+			((TextField)topHBox.getChildren().get(1)).setText(Main.assets.getAssetsList().get(assetIndex).getBalanceStr());
+
+
+			// Populate choice box
+			ChoiceBox<String> choiceBox = (ChoiceBox<String>)((HBox)tabContent.getChildren().get(2)).getChildren().get(3);
+			CategoryUtils.populateCategoryChoiceBox(choiceBox, Main.assets.getAssetsList().get(assetIndex));
+
+			TableView<TransferField> tableView = (TableView<TransferField>)tabContent.getChildren().get(1);
+			TableColumn<TransferField, String> dateCol = (TableColumn<TransferField, String>)tableView.getColumns().get(0);
+			TableColumn<TransferField, String> detailCol = (TableColumn<TransferField, String>)tableView.getColumns().get(1);
+			TableColumn<TransferField, String> categoryCol = (TableColumn<TransferField, String>)tableView.getColumns().get(2);
+			TableColumn<TransferField, String> depositCol = (TableColumn<TransferField, String>)tableView.getColumns().get(3);
+			TableColumn<TransferField, String> withdrawlCol = (TableColumn<TransferField, String>)tableView.getColumns().get(4);
+			TableColumn<TransferField, String> balanceCol = (TableColumn<TransferField, String>)tableView.getColumns().get(5);
+
+			dateCol.setCellValueFactory(new PropertyValueFactory<TransferField, String>("dateStr"));
+			detailCol.setCellValueFactory(new PropertyValueFactory<TransferField, String>("detailStr"));
+			categoryCol.setCellValueFactory(new PropertyValueFactory<TransferField, String>("categoryStr"));
+			depositCol.setCellValueFactory(new PropertyValueFactory<TransferField, String>("depositStr"));
+			withdrawlCol.setCellValueFactory(new PropertyValueFactory<TransferField, String>("withdrawlStr"));
+			balanceCol.setCellValueFactory(new PropertyValueFactory<TransferField, String>("balanceStr"));
+
+
+			Main.assets.getAssetsList().get(assetIndex).setObservableTransferField(FXCollections.observableArrayList(Main.assets.getAssetsList().get(assetIndex).getTransferField()));
+			tableView.setItems(Main.assets.getAssetsList().get(assetIndex).getObservableTransferField());
+
 			tabPane.getTabs().add(newTab);
 			selectionModel.select(newTab);
 		} catch (IOException e) {

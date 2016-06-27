@@ -10,8 +10,8 @@ public class Asset {
 	private String name;
 	private AssetType type;
 	private double balance = 0;
-	public ArrayList<TransferField> transferField = new ArrayList<TransferField>();
-	public ObservableList<TransferField> observableTransferField = FXCollections.observableArrayList();
+	private ArrayList<TransferField> transferField = new ArrayList<TransferField>();
+	private ObservableList<TransferField> observableTransferField = FXCollections.observableArrayList();
 
 	public Asset(){
 		balance = 0;
@@ -21,6 +21,18 @@ public class Asset {
 		this.name = name;
 		this.type = type;
 		balance = 0;
+	}
+
+	public Asset(SaveAsset sa){
+		name = sa.getName();
+		type = sa.getType();
+		balance = sa.getBalance();
+		transferField.clear();
+		observableTransferField.clear();
+		for (int i = 0; i < sa.getTransferField().size(); i++) {
+			transferField.add(new TransferField(sa.getTransferField().get(i)));
+		}
+		observableTransferField = FXCollections.observableArrayList(transferField);
 	}
 
 	public void insert(TransferField tf){
@@ -67,5 +79,16 @@ public class Asset {
 	public void addBalance(int amount){
 		this.balance += amount;
 	}
-
+	public ArrayList<TransferField> getTransferField() {
+		return transferField;
+	}
+	public void setTransferField(ArrayList<TransferField> transferField) {
+		this.transferField = transferField;
+	}
+	public ObservableList<TransferField> getObservableTransferField() {
+		return observableTransferField;
+	}
+	public void setObservableTransferField(ObservableList<TransferField> observableTransferField) {
+		this.observableTransferField = observableTransferField;
+	}
 }
