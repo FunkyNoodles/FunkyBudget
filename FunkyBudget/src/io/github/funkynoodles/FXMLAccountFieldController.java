@@ -7,7 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
@@ -52,8 +52,8 @@ public class FXMLAccountFieldController {
 
 
 			// Populate choice box
-			ChoiceBox<String> choiceBox = (ChoiceBox<String>)((HBox)tabContent.getChildren().get(2)).getChildren().get(3);
-			CategoryUtils.populateCategoryChoiceBox(choiceBox, Main.assets.getAssetsList().get(assetIndex));
+			ComboBox<String> comboBox = (ComboBox<String>)((HBox)tabContent.getChildren().get(2)).getChildren().get(3);
+			CategoryUtils.populateCategoryChoiceBox(comboBox, Main.assets.getAssetsList().get(assetIndex));
 
 			TableView<TransferField> tableView = (TableView<TransferField>)tabContent.getChildren().get(1);
 			TableColumn<TransferField, String> dateCol = (TableColumn<TransferField, String>)tableView.getColumns().get(0);

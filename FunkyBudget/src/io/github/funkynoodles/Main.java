@@ -80,7 +80,7 @@ public class Main extends Application{
 			}
 		} catch (Exception e) {
 			Alert erroBox = new Alert(AlertType.ERROR);
-			erroBox.setTitle("Funky Budget");
+			erroBox.setTitle(Reference.NAME);
 			erroBox.setHeaderText("Error opening file");
 			erroBox.setContentText("Please try again");
 			erroBox.showAndWait();
@@ -117,10 +117,11 @@ public class Main extends Application{
 
 	public static void saveAll(){
 		SaveAssets assetsSave = new SaveAssets();
+		assetsSave.setVersion(Reference.VERSION);
 		for(int i = 0; i < assets.size(); i ++){
 			assetsSave.insert(new SaveAsset(assets.getAssetsList().get(i)));
 		}
-		Gson gson = new Gson();
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		if (workingFileLocation.equals("")) {
 			// Choose a file to save
 			FileChooser fileChooser = new FileChooser();
@@ -143,7 +144,7 @@ public class Main extends Application{
 			writer.close();
 		} catch (IOException e) {
 			Alert erroBox = new Alert(AlertType.ERROR);
-			erroBox.setTitle("Funky Budget");
+			erroBox.setTitle(Reference.NAME);
 			erroBox.setHeaderText("Error opening the save file");
 			erroBox.setContentText("Would you like to select a new directory?");
 			ButtonType ok = new ButtonType("Okay");
@@ -177,7 +178,7 @@ public class Main extends Application{
 		if(Main.changed){
 			// Prompt save option
 			Alert saveWindow = new Alert(AlertType.WARNING);
-			saveWindow.setTitle("Funky Budget");
+			saveWindow.setTitle(Reference.NAME);
 			saveWindow.setHeaderText("Do you want to save any changes made?");
 			saveWindow.setContentText("Your changes will be lost you don't save them.");
 
@@ -219,7 +220,7 @@ public class Main extends Application{
 	public void start(Stage primaryStage) throws Exception {
 		Platform.setImplicitExit(false);
 		Main.primaryStage = primaryStage;
-		primaryStage.setTitle("Funky Budget");
+		primaryStage.setTitle(Reference.NAME);
 		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>(){
 			@Override
 			public void handle(WindowEvent e){

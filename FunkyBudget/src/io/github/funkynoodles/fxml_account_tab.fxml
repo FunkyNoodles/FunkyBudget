@@ -17,7 +17,7 @@
          				<children>
       <HBox prefHeight="36.0" prefWidth="902.0" spacing="10.0">
          <children>
-      
+
                				    <Label alignment="BASELINE_LEFT" contentDisplay="CENTER" prefHeight="31.0" prefWidth="140.0" style="-fx-font: NORMAL 20 Arial" text="Book" />
             <TextField editable="false" text="0.00" />
          </children>
@@ -44,8 +44,7 @@
                                  </padding>
                               </TextField>
             <TextField fx:id="detailsText" prefHeight="31.0" promptText="Details" HBox.hgrow="ALWAYS" />
-            <ChoiceBox prefWidth="150.0">
-            </ChoiceBox>
+            <ComboBox fx:id="comboBox" prefWidth="200.0" />
                               <Button alignment="CENTER" maxWidth="100.0" mnemonicParsing="false" onAction="#handleAddButton" prefWidth="100.0" text="Add" />
                            </children>
          <opaqueInsets>

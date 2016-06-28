@@ -3,6 +3,7 @@ package io.github.funkynoodles;
 import java.util.ArrayList;
 
 public class SaveAssets {
+	private String version = "";
 	private ArrayList<SaveAsset> assetList = new ArrayList<SaveAsset>();
 
 	public int size(){
@@ -19,5 +20,13 @@ public class SaveAssets {
 
 	public void setAssetsList(ArrayList<SaveAsset> accountList) {
 		this.assetList = accountList;
+	}
+
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
 	}
 }

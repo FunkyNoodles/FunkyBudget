@@ -9,8 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.DatePicker;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
@@ -70,8 +69,8 @@ public class FXMLNewAssetController {
 			newTab.setId("tab" + assetName);
 
 			// Populate choice box
-			ChoiceBox<String> choiceBox = (ChoiceBox<String>)((HBox)tabContent.getChildren().get(2)).getChildren().get(3);
-			CategoryUtils.populateCategoryChoiceBox(choiceBox, newAsset);
+			ComboBox<String> comboBox = (ComboBox<String>)((HBox)tabContent.getChildren().get(2)).getChildren().get(3);
+			CategoryUtils.populateCategoryChoiceBox(comboBox, newAsset);
 
 			Main.assets.insert(newAsset);
 

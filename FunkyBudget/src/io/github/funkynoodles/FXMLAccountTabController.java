@@ -8,7 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
@@ -26,6 +26,8 @@ import javafx.scene.layout.VBox;
 
 public class FXMLAccountTabController {
 
+	@FXML private ComboBox<String> comboBox;
+
 	@SuppressWarnings("unchecked")
 	@FXML
     protected void handleAddButton(final ActionEvent event) {
@@ -37,11 +39,10 @@ public class FXMLAccountTabController {
     	String amount = amountTextField.getText();
     	TextField detailsTextField = (TextField)hbox.getChildren().get(2);
     	String details = detailsTextField.getText();
-    	ChoiceBox<String> choiceBox = (ChoiceBox<String>)hbox.getChildren().get(3);
     	double amountNum = 0;
     	LocalDate date = datePicker.getValue();
     	String dateStr = "";
-    	String c = choiceBox.getValue();
+    	String c = comboBox.getValue();
 
     	try{
     		amountNum = Double.parseDouble(amount);
@@ -73,7 +74,7 @@ public class FXMLAccountTabController {
     	amountTextField.clear();
     	detailsTextField.clear();
 
-    	TransferField tf = new TransferField(date, amountNum, details, CategoryUtils.toCategory(c));
+    	TransferField tf = new TransferField(date, amountNum, details, CategoryUtils.map.inverse().get(c));
     	Asset asset;
     	TabPane tabPane = (TabPane) scene.lookup("#tabPane");
     	Tab tab = tabPane.getSelectionModel().getSelectedItem();
@@ -135,5 +136,10 @@ public class FXMLAccountTabController {
 			if (keyEvent.isControlDown() && keyEvent.getCode() == KeyCode.ENTER){
 			}
 		}
+	}
+
+	@FXML
+	protected void initialize(){
+		CategoryUtils.populateMap();
 	}
 }

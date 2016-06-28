@@ -53,7 +53,7 @@ public class TransferField {
 		}else{
 		}
 		setCategory(cat);
-		categoryStr.setValue(CategoryUtils.toString(cat));
+		categoryStr.setValue(CategoryUtils.map.get(cat));
 		setCurrentBalance(cb);
 		balanceStr.setValue(getBalanceStr());
 	}
