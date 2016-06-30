@@ -53,7 +53,7 @@ public class FXMLAccountFieldController {
 
 			// Populate choice box
 			ComboBox<String> comboBox = (ComboBox<String>)((HBox)tabContent.getChildren().get(2)).getChildren().get(3);
-			CategoryUtils.populateCategoryChoiceBox(comboBox, Main.assets.getAssetsList().get(assetIndex));
+			EnumUtils.populateCategoryComboBox(comboBox, Main.assets.getAssetsList().get(assetIndex));
 
 			TableView<TransferField> tableView = (TableView<TransferField>)tabContent.getChildren().get(1);
 			TableColumn<TransferField, String> dateCol = (TableColumn<TransferField, String>)tableView.getColumns().get(0);

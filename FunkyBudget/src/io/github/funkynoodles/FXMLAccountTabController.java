@@ -74,7 +74,7 @@ public class FXMLAccountTabController {
     	amountTextField.clear();
     	detailsTextField.clear();
 
-    	TransferField tf = new TransferField(date, amountNum, details, CategoryUtils.map.inverse().get(c));
+    	TransferField tf = new TransferField(date, amountNum, details, EnumUtils.categoryMap.inverse().get(c));
     	Asset asset;
     	TabPane tabPane = (TabPane) scene.lookup("#tabPane");
     	Tab tab = tabPane.getSelectionModel().getSelectedItem();
@@ -140,6 +140,6 @@ public class FXMLAccountTabController {
 
 	@FXML
 	protected void initialize(){
-		CategoryUtils.populateMap();
+		EnumUtils.populateCategoryMap();
 	}
 }

@@ -115,7 +115,7 @@ public class Main extends Application{
 		return true;
 	}
 
-	public static void saveAll(){
+	public static boolean saveAll(){
 		SaveAssets assetsSave = new SaveAssets();
 		assetsSave.setVersion(Reference.VERSION);
 		for(int i = 0; i < assets.size(); i ++){
@@ -134,7 +134,7 @@ public class Main extends Application{
 			if (file != null) {
 				workingFileLocation = file.getAbsolutePath();
 			}else{
-				return;
+				return false;
 			}
 		}
 
@@ -172,6 +172,7 @@ public class Main extends Application{
 			});
 		}
 		Main.changed = false;
+		return true;
 	}
 
 	public static boolean exit(){
@@ -190,7 +191,9 @@ public class Main extends Application{
 			saveWindow.showAndWait().ifPresent(response->{
 				if(response == save){
 					// TODO save function
-					Platform.exit();
+					if (saveAll()) {
+						Platform.exit();
+					}
 				}else if(response == dontSave){
 					Platform.exit();
 				}else{

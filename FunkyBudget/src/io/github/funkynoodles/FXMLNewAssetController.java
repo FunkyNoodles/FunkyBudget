@@ -24,6 +24,8 @@ import javafx.stage.Stage;
 
 public class FXMLNewAssetController {
 
+	@FXML private ComboBox<String> newAssetTypeComboBox;
+
     @FXML
     protected void handleCreateButton(final ActionEvent event) {
     	Button btn = (Button) event.getSource();
@@ -35,24 +37,33 @@ public class FXMLNewAssetController {
     	TabPane tabPane = (TabPane)rootScene.lookup("#tabPane");
     	Tab newTab = new Tab();
     	String assetName = ((TextField)scene.lookup("#newAssetName")).getText();
+    	String assetTypeString = newAssetTypeComboBox.getValue();
 
-    	if (assetName.isEmpty() ){//|| assetType.isEmpty()) {
+    	if (assetName.isEmpty()){
 			Alert errorBox = new Alert(AlertType.ERROR);
-			errorBox.setTitle("Error");
-			errorBox.setHeaderText("Invalid Information");
-			errorBox.setContentText("Please Enter Valid Information");
+			errorBox.setTitle(Reference.NAME);
+			errorBox.setHeaderText("Invalid Name");
+			errorBox.setContentText("Please enter valid information");
 			errorBox.showAndWait();
 			return;
 		}
     	if (Main.isNameTaken(assetName)){
 			Alert errorBox = new Alert(AlertType.ERROR);
-			errorBox.setTitle("Error");
+			errorBox.setTitle(Reference.NAME);
 			errorBox.setHeaderText("Asset Name Taken");
-			errorBox.setContentText("Please Enter Another Asset Name");
+			errorBox.setContentText("Please enter another asset name");
 			errorBox.showAndWait();
 			return;
 		}
-    	Asset newAsset = new Asset(assetName, AssetType.BANK_CHECKINGS);
+    	if (assetTypeString == null){
+    		Alert errorBox = new Alert(AlertType.ERROR);
+			errorBox.setTitle(Reference.NAME);
+			errorBox.setHeaderText("Invalid Asset Type");
+			errorBox.setContentText("Please choose an asset type");
+			errorBox.showAndWait();
+			return;
+    	}
+    	Asset newAsset = new Asset(assetName, EnumUtils.assetTypeMap.inverse().get(assetTypeString));
     	SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
 
     	try {
@@ -70,7 +81,7 @@ public class FXMLNewAssetController {
 
 			// Populate choice box
 			ComboBox<String> comboBox = (ComboBox<String>)((HBox)tabContent.getChildren().get(2)).getChildren().get(3);
-			CategoryUtils.populateCategoryChoiceBox(comboBox, newAsset);
+			EnumUtils.populateCategoryComboBox(comboBox, newAsset);
 
 			Main.assets.insert(newAsset);
 
@@ -101,5 +112,11 @@ public class FXMLNewAssetController {
     	Button btn = (Button) event.getSource();
     	Stage stage = (Stage) btn.getScene().getWindow();
     	stage.hide();
+    }
+
+    @FXML
+    protected void initialize(){
+    	EnumUtils.populateAssetTypeMap();
+    	EnumUtils.populateNewAssetTypeComboBox(newAssetTypeComboBox);
     }
 }
