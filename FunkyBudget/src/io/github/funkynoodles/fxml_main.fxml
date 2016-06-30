@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.input.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -11,9 +12,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.funkynoodles.FXMLMainController" onKeyPressed="#handleKeyInput">
+<VBox onKeyPressed="#handleKeyInput" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.funkynoodles.FXMLMainController">
    <children>
-       <MenuBar fx:id="menuBar" >
+       <MenuBar fx:id="menuBar">
        	<menus>
        		<Menu text="File">
                <items>
@@ -31,6 +32,14 @@
                   <MenuItem text="Cut" />
                   <MenuItem text="Paste" />
                </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Reports">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#handleReportGraph" text="Graphs">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="G" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
+              </items>
             </Menu>
             <Menu text="Help">
                <items>

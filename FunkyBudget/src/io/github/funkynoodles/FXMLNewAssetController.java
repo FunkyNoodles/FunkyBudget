@@ -26,7 +26,8 @@ public class FXMLNewAssetController {
 
 	@FXML private ComboBox<String> newAssetTypeComboBox;
 
-    @FXML
+    @SuppressWarnings("unchecked")
+	@FXML
     protected void handleCreateButton(final ActionEvent event) {
     	Button btn = (Button) event.getSource();
     	Scene scene = btn.getScene();
@@ -86,12 +87,6 @@ public class FXMLNewAssetController {
 			Main.assets.insert(newAsset);
 
 			TableView<TransferField> tableView = (TableView<TransferField>)tabContent.getChildren().get(1);
-			TableColumn<TransferField, String> dateCol = (TableColumn<TransferField, String>)tableView.getColumns().get(0);
-			TableColumn detailCol = (TableColumn)tableView.getColumns().get(1);
-			TableColumn categoryCol = (TableColumn)tableView.getColumns().get(2);
-			TableColumn depositCol = (TableColumn)tableView.getColumns().get(3);
-			TableColumn withdrawlCol = (TableColumn)tableView.getColumns().get(4);
-			TableColumn balanceCol = (TableColumn)tableView.getColumns().get(5);
 
 			int assetIndex = Main.findAssetIndexByName(assetName);
 
