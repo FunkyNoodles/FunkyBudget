@@ -19,9 +19,9 @@
        		<Menu text="File">
                <items>
                   <MenuItem accelerator="Ctrl N" text="New" />
-                  <MenuItem accelerator="Ctrl O" text="Open" />
-                  <MenuItem accelerator="Ctrl S" text="Save" />
-                  <MenuItem accelerator="Ctrl Shift S" text="Save As" />
+                  <MenuItem accelerator="Ctrl + O" onAction="#handleOpenFile" text="Open" />
+                  <MenuItem accelerator="Ctrl + S" onAction="#handleSaveFile" text="Save" />
+                  <MenuItem accelerator="Ctrl + Shift + S" text="Save As" />
                   <SeparatorMenuItem />
                   <MenuItem onAction="#handleExitAction" text="Exit" />
                </items>
@@ -69,7 +69,8 @@
                         </Label>
                         <Button fx:id="newAssetButton" mnemonicParsing="false" onAction="#handleNewAssetButton" prefHeight="31.0" prefWidth="125.0" text="New..." />
                      </children></VBox>
-               </content></Tab>
+               </content>
+            </Tab>
    		</tabs>
        </TabPane>
    </children>

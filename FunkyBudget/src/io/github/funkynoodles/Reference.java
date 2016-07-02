@@ -11,4 +11,6 @@ public class Reference {
 	public static final String PERIOD_COMBOBOX_PAST_MONTH = "Past Month";
 	public static final String PERIOD_COMBOBOX_PAST_YEAR = "Past Year";
 	public static final String PERIOD_COMBOBOC_CUSTOM = "Custom (Inclusive)";
+
+	public static final String CHART_TYPE_EXPENSE_PIE_CHART = "Expense Pie Chart";
 }

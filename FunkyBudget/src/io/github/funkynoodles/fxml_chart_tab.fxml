@@ -25,4 +25,20 @@
          </children>
       </HBox>
    </top>
+   <left>
+      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label prefHeight="31.0" text="Chart Type" />
+                  <ComboBox fx:id="chartTypeComboBox" prefWidth="150.0" />
+               </children>
+            </HBox>
+            <Button fx:id="generateButton" onAction="#handleGenerateButton" mnemonicParsing="false" text="Generate" />
+         </children>
+      </VBox>
+   </left>
+   <center>
+      <VBox fx:id="centerVBox" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
+   </center>
 </BorderPane>

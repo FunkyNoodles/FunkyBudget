@@ -60,6 +60,16 @@ public class FXMLMainController {
     }
 
     @FXML
+    protected void handleOpenFile(){
+    	Main.loadAll();
+    }
+
+    @FXML
+    protected void handleSaveFile(){
+    	Main.saveAll();
+    }
+
+    @FXML
     private void handleKeyInput(final InputEvent event)
     {
        if (event instanceof KeyEvent)
@@ -68,13 +78,6 @@ public class FXMLMainController {
           if (keyEvent.isControlDown() && keyEvent.getCode() == KeyCode.Q)
           {
         	  Main.exit();
-          }
-          if (keyEvent.isControlDown() && keyEvent.getCode() == KeyCode.S)
-          {
-        	  Main.saveAll();
-          }
-          if (keyEvent.isControlDown() && keyEvent.getCode() == KeyCode.O){
-        	  Main.loadAll();
           }
        }
     }

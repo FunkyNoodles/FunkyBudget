@@ -27,8 +27,11 @@ public class Assets {
 	}
 
 	public void loadFromSave(SaveAssets sa){
+		assetList.clear();
+		assetObservableList.clear();
 		for(int i = 0; i < sa.size(); i ++){
 			assetList.add(new Asset(sa.getAssetsList().get(i)));
+			assetObservableList.add(assetList.get(i).getName());
 		}
 	}
 

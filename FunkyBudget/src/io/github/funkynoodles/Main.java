@@ -6,7 +6,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
-import java.time.LocalDate;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -49,12 +48,13 @@ public class Main extends Application{
 		return -1;
 	}
 	// Return true if the file is successfully loaded
+	@SuppressWarnings("unused")
 	public static boolean loadAll(){
 		File file = null;
 		if (workingFileLocation.equals("")) {
 			// Choose a file to save
 			FileChooser fileChooser = new FileChooser();
-			fileChooser.setTitle("Save As");
+			fileChooser.setTitle("Open");
 			fileChooser.getExtensionFilters().addAll(
 				new FileChooser.ExtensionFilter("All Files", "*.*"),
 				new FileChooser.ExtensionFilter("JSON", "*.json")
@@ -91,7 +91,7 @@ public class Main extends Application{
 		TabPane tabPane = (TabPane) primaryStage.getScene().lookup("#tabPane");
 
 		Tab rootTab = null;
-		for (int i = 0; i < tabPane.getTabs().size(); i++) {
+		for (int i = 0; i < tabPane.getTabs().size(); ++i) {
 			rootTab = tabPane.getTabs().get(i);
 			if (rootTab.getId().equals("rootTabAsset")) {
 				break;
@@ -108,7 +108,6 @@ public class Main extends Application{
 	    		((TextField)assetField.getChildren().get(1)).setText(assetBalance);
 	    		rootTabVBox.getChildren().add(rootTabVBox.getChildren().size() - 1, assetField);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -190,7 +189,6 @@ public class Main extends Application{
 			saveWindow.getButtonTypes().setAll(save, dontSave, cancel);
 			saveWindow.showAndWait().ifPresent(response->{
 				if(response == save){
-					// TODO save function
 					if (saveAll()) {
 						Platform.exit();
 					}

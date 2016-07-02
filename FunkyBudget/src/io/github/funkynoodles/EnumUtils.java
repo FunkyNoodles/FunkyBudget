@@ -69,7 +69,6 @@ public class EnumUtils {
 	}
 
 	public static void populateCategoryComboBox(ComboBox<String> comboBox, Asset a){
-		//TODO: add assets' saved categories
 		ObservableList<String> list = FXCollections.observableArrayList();
 		for(Category c : Category.values()){
 			list.add(categoryMap.get(c));
