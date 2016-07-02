@@ -111,7 +111,6 @@ public class FXMLNewAssetController {
 
     @FXML
     protected void initialize(){
-    	EnumUtils.populateAssetTypeMap();
     	EnumUtils.populateNewAssetTypeComboBox(newAssetTypeComboBox);
     }
 }

@@ -7,6 +7,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Side;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -14,9 +15,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
 public class FXMLChartTabController {
+
+	@FXML private BorderPane borderPane;
 
 	// Top pane
 	@FXML private ComboBox<String> assetComboBox;
@@ -38,6 +42,15 @@ public class FXMLChartTabController {
 	public void handleGenerateButton(){
 		String periodStr = periodComboBox.getValue();
 		String chartTypeStr = chartTypeComboBox.getValue();
+		String assetStr = assetComboBox.getValue();
+		if (assetStr == null) {
+			Alert errorBox = new Alert(AlertType.ERROR);
+			errorBox.setTitle(Reference.NAME);
+			errorBox.setHeaderText("Invalid Asset");
+			errorBox.setContentText("Please choose an asset");
+			errorBox.showAndWait();
+			return;
+		}
 		if (periodStr == null) {
 			Alert errorBox = new Alert(AlertType.ERROR);
 			errorBox.setTitle(Reference.NAME);
@@ -71,15 +84,38 @@ public class FXMLChartTabController {
 		}
 		switch (chartTypeStr) {
 		case Reference.CHART_TYPE_EXPENSE_PIE_CHART:
-
+			int assetIndex = Main.findAssetIndexByName(assetStr);
+			generateExpensePieChart(Main.assets.getAssetsList().get(assetIndex), null, null);
 			break;
 		default:
 			break;
 		}
 	}
 
-	private void generateExpensePieChart(LocalDate fromDate, LocalDate toDate){
-		PieChart pieChart = new PieChart();
+	private void generateExpensePieChart(Asset asset, LocalDate fromDate, LocalDate toDate){
+		ObservableList<PieChart.Data> chartData = FXCollections.observableArrayList();
+		double[] data = new double[Category.values().length];
+		for (int i = 0; i < data.length; i++) {
+			data[i] = 0.0;
+		}
+		TransferField tf;
+		for (int i = 0; i < asset.size(); i++) {
+			tf = asset.getTransferField().get(i);
+			if (tf.getCategoryStr().contains("Expense:")) {
+				Category c = tf.getCategory();
+				data[c.ordinal()] += tf.getAmount();
+			}
+		}
+
+		for (int i = 0; i < data.length; i++) {
+			if (data[i] != 0.0) {
+				chartData.add(new PieChart.Data(EnumUtils.categoryMap.get(Category.values()[i]).substring(8) ,Math.abs(data[i])));
+			}
+		}
+		PieChart pieChart = new PieChart(chartData);
+		pieChart.setLegendSide(Side.LEFT);
+		borderPane.setCenter(pieChart);
+		//centerVBox.getChildren().add(pieChart);
 	}
 
 	@FXML

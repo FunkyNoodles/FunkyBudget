@@ -140,6 +140,5 @@ public class FXMLAccountTabController {
 
 	@FXML
 	protected void initialize(){
-		EnumUtils.populateCategoryMap();
 	}
 }

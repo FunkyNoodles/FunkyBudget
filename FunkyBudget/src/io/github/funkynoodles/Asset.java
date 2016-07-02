@@ -35,6 +35,10 @@ public class Asset {
 		observableTransferField = FXCollections.observableArrayList(transferField);
 	}
 
+	public int size(){
+		return transferField.size();
+	}
+
 	public void insert(TransferField tf){
 		if (transferField.size() == 0) {
 			tf.setCurrentBalance(tf.getAmount());

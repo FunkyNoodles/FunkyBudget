@@ -51,27 +51,25 @@ public class Main extends Application{
 	@SuppressWarnings("unused")
 	public static boolean loadAll(){
 		File file = null;
-		if (workingFileLocation.equals("")) {
-			// Choose a file to save
-			FileChooser fileChooser = new FileChooser();
-			fileChooser.setTitle("Open");
-			fileChooser.getExtensionFilters().addAll(
-				new FileChooser.ExtensionFilter("All Files", "*.*"),
-				new FileChooser.ExtensionFilter("JSON", "*.json")
-			);
-			file = fileChooser.showOpenDialog(primaryStage);
-			if (file != null) {
-				workingFileLocation = file.getAbsolutePath();
-			}else{
-				return false;
-			}
+		// Choose a file to save
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Open");
+		fileChooser.getExtensionFilters().addAll(
+			new FileChooser.ExtensionFilter("All Files", "*.*"),
+			new FileChooser.ExtensionFilter("JSON", "*.json")
+		);
+		file = fileChooser.showOpenDialog(primaryStage);
+		if (file != null) {
+			workingFileLocation = file.getAbsolutePath();
+		}else{
+			return false;
 		}
 		Gson gson = new Gson();
 		try {
 			SaveAssets saveAssets = new SaveAssets();
 			Reader reader = new FileReader(file);
 			saveAssets = gson.fromJson(reader, SaveAssets.class);
-			//workingFileLocation = file.getAbsolutePath();
+			Main.assets.getAssetsList().clear();
 			Main.assets.loadFromSave(saveAssets);
 			try {
 				reader.close();
@@ -205,6 +203,8 @@ public class Main extends Application{
 	}
 
 	public static void main(String[] args){
+		EnumUtils.populateAssetTypeMap();
+    	EnumUtils.populateCategoryMap();
 		launch(args);
 	}
 

@@ -2,14 +2,18 @@ package io.github.funkynoodles;
 
 import java.io.IOException;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -61,6 +65,27 @@ public class FXMLMainController {
 
     @FXML
     protected void handleOpenFile(){
+    	if(Main.changed){
+			// Prompt save option
+			Alert saveWindow = new Alert(AlertType.WARNING);
+			saveWindow.setTitle(Reference.NAME);
+			saveWindow.setHeaderText("Do you want to save any changes made?");
+			saveWindow.setContentText("Your changes will be lost you don't save them.");
+
+			ButtonType save = new ButtonType("Save");
+			ButtonType dontSave = new ButtonType("Don't Save");
+			ButtonType cancel = new ButtonType("Cancel");
+
+			saveWindow.getButtonTypes().setAll(save, dontSave, cancel);
+			saveWindow.showAndWait().ifPresent(response->{
+				if(response == save){
+					Main.saveAll();
+				}else if(response == dontSave){
+				}else{
+					return;
+				}
+			});
+		}
     	Main.loadAll();
     }
 
