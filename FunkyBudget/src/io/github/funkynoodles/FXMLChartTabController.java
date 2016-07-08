@@ -1,5 +1,6 @@
 package io.github.funkynoodles;
 
+import java.io.IOException;
 import java.time.LocalDate;
 
 import javafx.beans.value.ChangeListener;
@@ -7,6 +8,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Side;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Alert;
@@ -34,9 +36,6 @@ public class FXMLChartTabController {
 	// Left pane
 	@FXML private ComboBox<String> chartTypeComboBox;
 	@FXML private Button generateButton;
-
-	// Center pane
-	@FXML private VBox centerVBox;
 
 	@FXML
 	public void handleGenerateButton(){
@@ -67,25 +66,49 @@ public class FXMLChartTabController {
 			errorBox.showAndWait();
 			return;
 		}
+
+		LocalDate fromDate = null, toDate = LocalDate.now();;
 		switch (periodStr) {
 		// TODO select time period
 		case Reference.PERIOD_COMBOBOX_PAST_WEEK:
+			fromDate = toDate.minusWeeks(1);
 			break;
 		case Reference.PERIOD_COMBOBOX_PAST_2_WEEK:
+			fromDate = toDate.minusWeeks(2);
 			break;
 		case Reference.PERIOD_COMBOBOX_PAST_MONTH:
+			fromDate = toDate.minusMonths(1);
 			break;
 		case Reference.PERIOD_COMBOBOX_PAST_YEAR:
+			fromDate = toDate.minusYears(1);
 			break;
 		case Reference.PERIOD_COMBOBOC_CUSTOM:
+			fromDate = fromDatePicker.getValue();
+			toDate = toDatePicker.getValue();
+			if (fromDate.isAfter(toDate)) {
+				Alert errorBox = new Alert(AlertType.ERROR);
+				errorBox.setTitle(Reference.NAME);
+				errorBox.setHeaderText("Invalid Date Order");
+				errorBox.setContentText("Please choose proper dates");
+				errorBox.showAndWait();
+				return;
+			}
 			break;
 		default:
 			return;
 		}
 		switch (chartTypeStr) {
+		// TODO complete other types
 		case Reference.CHART_TYPE_EXPENSE_PIE_CHART:
 			int assetIndex = Main.findAssetIndexByName(assetStr);
-			generateExpensePieChart(Main.assets.getAssetsList().get(assetIndex), null, null);
+			generateExpensePieChart(Main.assets.getAssetsList().get(assetIndex), fromDate, toDate);
+
+			try {
+				VBox pieChartAdvanced = (VBox)FXMLLoader.load(getClass().getResource("fxml_expense_pie_chart_advanced.fxml"));
+				borderPane.setRight(pieChartAdvanced);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			break;
 		default:
 			break;
@@ -101,25 +124,28 @@ public class FXMLChartTabController {
 		TransferField tf;
 		for (int i = 0; i < asset.size(); i++) {
 			tf = asset.getTransferField().get(i);
-			if (tf.getCategoryStr().contains("Expense:")) {
+			if (tf.getCategoryStr().contains("Expense:") && !tf.getDate().isAfter(toDate) && !tf.getDate().isBefore(fromDate)) {
 				Category c = tf.getCategory();
-				data[c.ordinal()] += tf.getAmount();
+				data[c.ordinal()] += Math.abs(tf.getAmount());
+				//totalAmount += Math.abs(tf.getAmount());
 			}
 		}
-
+		// If not zero, then add entry
 		for (int i = 0; i < data.length; i++) {
 			if (data[i] != 0.0) {
 				chartData.add(new PieChart.Data(EnumUtils.categoryMap.get(Category.values()[i]).substring(8) ,Math.abs(data[i])));
+				//totalAmount += Math.abs(data[i]); // Accumulate amount
 			}
 		}
 		PieChart pieChart = new PieChart(chartData);
 		pieChart.setLegendSide(Side.LEFT);
+		pieChart.setLabelLineLength(20);
 		borderPane.setCenter(pieChart);
-		//centerVBox.getChildren().add(pieChart);
 	}
 
 	@FXML
 	public void initialize(){
+		//borderPane.getTop().getStyleClass().add("border-pane");
 		assetComboBox.setItems(Main.assets.getAssetObservableList());
 		ObservableList<String> periodComboBoxList = FXCollections.observableArrayList(
 				Reference.PERIOD_COMBOBOX_PAST_WEEK,

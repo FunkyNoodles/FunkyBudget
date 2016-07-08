@@ -232,6 +232,7 @@ public class Main extends Application{
 		});
 		Pane rootPane = (Pane)FXMLLoader.load(getClass().getResource("fxml_main.fxml"));
 		Scene scene = new Scene(rootPane, 1280, 720);
+		scene.getStylesheets().add("io/github/funkynoodles/stylesheet.css");
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}

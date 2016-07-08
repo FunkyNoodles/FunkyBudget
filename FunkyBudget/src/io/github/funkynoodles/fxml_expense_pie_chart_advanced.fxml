@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:id="vBox" alignment="TOP_LEFT" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.funkynoodles.FXMLExpensePieChartAdvancedController">
+   <children>
+      <Label alignment="CENTER" contentDisplay="CENTER" text="Advanced">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <CheckBox fx:id="percentageCheckBox" mnemonicParsing="false" onAction="#onPercentageCheckBoxToggle" text="Display Percentage" />
+      <CheckBox fx:id="valueCheckBox" mnemonicParsing="false" onAction="#onValueCheckBoxToggle" text="Display Value" />
+   </children>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
+</VBox>
