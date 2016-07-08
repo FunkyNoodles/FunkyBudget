@@ -1,10 +1,11 @@
 package io.github.funkynoodles;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 
 import javafx.beans.property.SimpleStringProperty;
 
-public class TransferField {
+public class TransferField implements Comparable<TransferField>, Comparator<TransferField>{
 	// This class holds data for each money transaction
 	private LocalDate date;
 	private String detail;
@@ -152,5 +153,15 @@ public class TransferField {
 
 	public void setBalanceStr(SimpleStringProperty balanceStr) {
 		this.balanceStr = balanceStr;
+	}
+
+	@Override
+	public int compareTo(TransferField o) {
+		return date.toString().compareTo(o.getDateStr());
+	}
+
+	@Override
+	public int compare(TransferField o1, TransferField o2) {
+		return o1.compareTo(o2);
 	}
 }

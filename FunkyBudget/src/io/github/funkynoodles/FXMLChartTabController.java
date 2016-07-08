@@ -2,6 +2,9 @@ package io.github.funkynoodles;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.Collections;
+import java.util.HashMap;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -10,7 +13,11 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Side;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -67,6 +74,9 @@ public class FXMLChartTabController {
 			return;
 		}
 
+		int assetIndex = Main.findAssetIndexByName(assetStr);
+		Asset asset = Main.assets.getAssetsList().get(assetIndex);
+
 		LocalDate fromDate = null, toDate = LocalDate.now();;
 		switch (periodStr) {
 		// TODO select time period
@@ -97,18 +107,20 @@ public class FXMLChartTabController {
 		default:
 			return;
 		}
+
 		switch (chartTypeStr) {
 		// TODO complete other types
 		case Reference.CHART_TYPE_EXPENSE_PIE_CHART:
-			int assetIndex = Main.findAssetIndexByName(assetStr);
-			generateExpensePieChart(Main.assets.getAssetsList().get(assetIndex), fromDate, toDate);
-
+			generateExpensePieChart(asset, fromDate, toDate);
 			try {
 				VBox pieChartAdvanced = (VBox)FXMLLoader.load(getClass().getResource("fxml_expense_pie_chart_advanced.fxml"));
 				borderPane.setRight(pieChartAdvanced);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+			break;
+		case Reference.CHART_TYPE_EXPENSE_OVER_TIME:
+			generateExpenseOverTimeChart(asset, fromDate, toDate);
 			break;
 		default:
 			break;
@@ -124,7 +136,7 @@ public class FXMLChartTabController {
 		TransferField tf;
 		for (int i = 0; i < asset.size(); i++) {
 			tf = asset.getTransferField().get(i);
-			if (tf.getCategoryStr().contains("Expense:") && !tf.getDate().isAfter(toDate) && !tf.getDate().isBefore(fromDate)) {
+			if (tf.getCategoryStr().contains("Expense:") && isBetweenDatesInclusive(tf.getDate(), fromDate, toDate)) {
 				Category c = tf.getCategory();
 				data[c.ordinal()] += Math.abs(tf.getAmount());
 				//totalAmount += Math.abs(tf.getAmount());
@@ -137,10 +149,75 @@ public class FXMLChartTabController {
 				//totalAmount += Math.abs(data[i]); // Accumulate amount
 			}
 		}
+		// Create pie chart
 		PieChart pieChart = new PieChart(chartData);
+		pieChart.setTitle("Expense by Category from " + fromDate.toString() + " to " + toDate.toString());
 		pieChart.setLegendSide(Side.LEFT);
 		pieChart.setLabelLineLength(20);
 		borderPane.setCenter(pieChart);
+	}
+
+	enum XAxisScale{
+		DAILY,
+		WEEKLY,
+		MONTHYLY,
+		YEARLY,
+	}
+	private void generateExpenseOverTimeChart(Asset asset, LocalDate fromDate, LocalDate toDate){
+		long days = ChronoUnit.DAYS.between(fromDate, toDate);
+		// Set scale of the chart
+		XAxisScale xScale;
+		if (days <= 28) {
+			xScale = XAxisScale.DAILY;
+		}else if (days <= 7 * 20) {
+			xScale = XAxisScale.WEEKLY;
+		}else if (days <= 24 * 30) {
+			xScale = XAxisScale.MONTHYLY;
+		}else{
+			xScale = XAxisScale.YEARLY;
+		}
+		// Axes
+		final CategoryAxis xAxis = new CategoryAxis();
+		final NumberAxis yAxis = new NumberAxis();
+
+		xAxis.setLabel("Time");
+		yAxis.setLabel("Expense");
+		// Line Chart
+		LineChart<String, Number> lineChart = new LineChart<>(xAxis, yAxis);
+		lineChart.setTitle("Expense from " + fromDate.toString() + " to " + toDate.toString());
+		// Populate series
+		XYChart.Series<String, Number> totalSeries = new XYChart.Series<>();
+		totalSeries.setName("Total Expense");
+		// Collect data
+		TransferField tf;
+		HashMap<String, Double> data = new HashMap<>();
+		for (int i = 0; i < asset.size(); i++) {
+			tf = asset.getTransferField().get(i);
+			if (tf.getCategoryStr().contains("Expense:") && isBetweenDatesInclusive(tf.getDate(), fromDate, toDate)) {
+				String dateStr = tf.getDateStr();
+				if (data.containsKey(dateStr)) {
+					data.put(dateStr, data.get(dateStr) + Math.abs(tf.getAmount()));
+				}else{
+					data.put(dateStr, Math.abs(tf.getAmount()));
+				}
+			}
+		}
+		switch (xScale) {
+		case DAILY:
+			for (String key : data.keySet()) {
+				totalSeries.getData().add(new XYChart.Data<String, Number>(key, data.get(key)));
+			}
+			break;
+
+		default:
+			break;
+		}
+		lineChart.getData().add(totalSeries);
+		borderPane.setCenter(lineChart);
+	}
+
+	private boolean isBetweenDatesInclusive(LocalDate date, LocalDate fromDate, LocalDate toDate){
+		return !date.isAfter(toDate) && !date.isBefore(fromDate);
 	}
 
 	@FXML
@@ -206,7 +283,9 @@ public class FXMLChartTabController {
 			}
 		});
 		ObservableList<String> chartTypeComboBoxList = FXCollections.observableArrayList(
-				Reference.CHART_TYPE_EXPENSE_PIE_CHART
+				// TODO complete chart types
+				Reference.CHART_TYPE_EXPENSE_PIE_CHART,
+				Reference.CHART_TYPE_EXPENSE_OVER_TIME
 				);
 		chartTypeComboBox.setItems(chartTypeComboBoxList);
 		chartTypeComboBox.valueProperty().addListener(new ChangeListener<String>() {

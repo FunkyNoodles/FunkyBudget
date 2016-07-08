@@ -41,12 +41,11 @@ public class FXMLAccountTabController {
     	String details = detailsTextField.getText();
     	double amountNum = 0;
     	LocalDate date = datePicker.getValue();
-    	String dateStr = "";
     	String c = comboBox.getValue();
 
     	try{
     		amountNum = Double.parseDouble(amount);
-    		dateStr = date.toString();
+    		date.toString();
 
     	}catch (NullPointerException e){
     		Alert errorBox = new Alert(AlertType.ERROR);

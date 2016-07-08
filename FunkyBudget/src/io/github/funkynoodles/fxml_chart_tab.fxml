@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
@@ -13,8 +14,6 @@
    <top>
       <HBox alignment="TOP_CENTER" prefWidth="200.0" spacing="10.0" styleClass="border-pane" stylesheets="@stylesheet.css" BorderPane.alignment="CENTER">
          <children>
-            <Label prefHeight="31.0" text="Asset" />
-            <ComboBox fx:id="assetComboBox" prefWidth="150.0" />
             <Label prefHeight="31.0" text="Period" />
             <ComboBox fx:id="periodComboBox" prefWidth="150.0" />
             <Label fx:id="fromLabel" prefHeight="31.0" text="From" visible="false" />
@@ -29,12 +28,27 @@
       </HBox>
    </top>
    <left>
-      <VBox alignment="TOP_CENTER" prefHeight="200.0" spacing="10.0" styleClass="border-pane" stylesheets="@stylesheet.css" BorderPane.alignment="TOP_CENTER">
+      <VBox alignment="TOP_CENTER" spacing="10.0" styleClass="border-pane" stylesheets="@stylesheet.css" BorderPane.alignment="TOP_CENTER">
          <children>
-            <HBox alignment="CENTER" prefHeight="100.0" spacing="10.0">
+            <Label text="Chart Settings">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <HBox alignment="CENTER" spacing="10.0">
                <children>
-                  <Label prefHeight="31.0" text="Chart Type" />
-                  <ComboBox fx:id="chartTypeComboBox" prefWidth="150.0" />
+                  <VBox spacing="10.0">
+                     <children>
+                        <Label prefHeight="31.0" text="Asset" />
+                        <Label prefHeight="31.0" text="Chart Type" />
+                     </children>
+                  </VBox>
+                  <VBox spacing="10.0">
+                     <children>
+                        <ComboBox fx:id="assetComboBox" prefWidth="150.0" />
+                        <ComboBox fx:id="chartTypeComboBox" prefWidth="150.0" />
+                     </children>
+                  </VBox>
                </children>
             </HBox>
             <Button fx:id="generateButton" mnemonicParsing="false" onAction="#handleGenerateButton" text="Generate" />
