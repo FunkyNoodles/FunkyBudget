@@ -13,6 +13,12 @@ public class Assets {
 		return assetList.size();
 	}
 
+	public void sort(){
+		for(Asset asset : assetList){
+			asset.sort();
+		}
+	}
+
 	public void insert(Asset a){
 		assetList.add(a);
 		assetObservableList.add(a.getName());

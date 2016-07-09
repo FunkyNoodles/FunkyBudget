@@ -1,6 +1,7 @@
 package io.github.funkynoodles;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -40,13 +41,31 @@ public class Asset {
 	}
 
 	public void insert(TransferField tf){
+		// Insert in order of date
 		if (transferField.size() == 0) {
 			tf.setCurrentBalance(tf.getAmount());
+			transferField.add(tf);
+			observableTransferField.add(tf);
+			return;
 		}else{
 			tf.setCurrentBalance(transferField.get(transferField.size() - 1).getCurrentBalance() + tf.getAmount());
+			for (int i = 0; i < transferField.size(); i++) {
+				if (tf.getDate().isAfter(transferField.get(i).getDate())) {
+					continue;
+				}else{
+					transferField.add(i ,tf);
+					observableTransferField.add(i, tf);
+					return;
+				}
+			}
 		}
 		transferField.add(tf);
 		observableTransferField.add(tf);
+	}
+
+	public void sort(){
+		Collections.sort(transferField);
+		Collections.sort(observableTransferField);
 	}
 
 	public String getName() {

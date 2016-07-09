@@ -51,6 +51,7 @@ public class FXMLMainController {
     @FXML
     protected void handleReportGraph(){
     	Tab newTab = new Tab("Graph " + Integer.toString(++graphOpenedCount));
+    	Main.assets.sort();
     	SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
     	try {
 			BorderPane tabContent = (BorderPane)FXMLLoader.load(getClass().getResource("fxml_chart_tab.fxml"));

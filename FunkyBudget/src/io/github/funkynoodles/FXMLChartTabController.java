@@ -3,8 +3,8 @@ package io.github.funkynoodles;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -163,6 +163,7 @@ public class FXMLChartTabController {
 		MONTHYLY,
 		YEARLY,
 	}
+
 	private void generateExpenseOverTimeChart(Asset asset, LocalDate fromDate, LocalDate toDate){
 		long days = ChronoUnit.DAYS.between(fromDate, toDate);
 		// Set scale of the chart
@@ -190,7 +191,7 @@ public class FXMLChartTabController {
 		totalSeries.setName("Total Expense");
 		// Collect data
 		TransferField tf;
-		HashMap<String, Double> data = new HashMap<>();
+		Map<String, Double> data = new TreeMap<String, Double>();
 		for (int i = 0; i < asset.size(); i++) {
 			tf = asset.getTransferField().get(i);
 			if (tf.getCategoryStr().contains("Expense:") && isBetweenDatesInclusive(tf.getDate(), fromDate, toDate)) {
@@ -205,6 +206,7 @@ public class FXMLChartTabController {
 		switch (xScale) {
 		case DAILY:
 			for (String key : data.keySet()) {
+				System.out.println(key);
 				totalSeries.getData().add(new XYChart.Data<String, Number>(key, data.get(key)));
 			}
 			break;
