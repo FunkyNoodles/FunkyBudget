@@ -68,6 +68,24 @@ public class Asset {
 		Collections.sort(observableTransferField);
 	}
 
+	public void updateBalance(){
+		TransferField tf = null;
+		if (transferField.size() == 0){
+			return;
+		}
+		for (int i = 0; i < transferField.size(); i++) {
+			tf = transferField.get(i);
+			if (i == 0) {
+				tf.setCurrentBalance(tf.getAmount());
+			}else{
+				TransferField prevTf = transferField.get(i - 1);
+				tf.setCurrentBalance(prevTf.getCurrentBalance() + tf.getAmount());
+			}
+		}
+		observableTransferField = FXCollections.observableArrayList(transferField);
+		balance = tf.getCurrentBalance();
+	}
+
 	public String getName() {
 		return name;
 	}

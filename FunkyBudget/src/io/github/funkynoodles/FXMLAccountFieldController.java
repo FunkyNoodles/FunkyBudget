@@ -7,21 +7,17 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
 public class FXMLAccountFieldController {
 
-	@SuppressWarnings("unchecked")
 	@FXML
 	protected void handleEditButton(final ActionEvent event){
 		Button btn = (Button)event.getSource();
@@ -50,26 +46,8 @@ public class FXMLAccountFieldController {
 			((Label)topHBox.getChildren().get(0)).setText(assetName);
 			((TextField)topHBox.getChildren().get(1)).setText(Main.assets.getAssetsList().get(assetIndex).getBalanceStr());
 
-
-			// Populate choice box
-			ComboBox<String> comboBox = (ComboBox<String>)((HBox)tabContent.getChildren().get(2)).getChildren().get(3);
-			EnumUtils.populateCategoryComboBox(comboBox, Main.assets.getAssetsList().get(assetIndex));
-
+			@SuppressWarnings("unchecked")
 			TableView<TransferField> tableView = (TableView<TransferField>)tabContent.getChildren().get(1);
-			TableColumn<TransferField, String> dateCol = (TableColumn<TransferField, String>)tableView.getColumns().get(0);
-			TableColumn<TransferField, String> detailCol = (TableColumn<TransferField, String>)tableView.getColumns().get(1);
-			TableColumn<TransferField, String> categoryCol = (TableColumn<TransferField, String>)tableView.getColumns().get(2);
-			TableColumn<TransferField, String> depositCol = (TableColumn<TransferField, String>)tableView.getColumns().get(3);
-			TableColumn<TransferField, String> withdrawlCol = (TableColumn<TransferField, String>)tableView.getColumns().get(4);
-			TableColumn<TransferField, String> balanceCol = (TableColumn<TransferField, String>)tableView.getColumns().get(5);
-
-			dateCol.setCellValueFactory(new PropertyValueFactory<TransferField, String>("dateStr"));
-			detailCol.setCellValueFactory(new PropertyValueFactory<TransferField, String>("detailStr"));
-			categoryCol.setCellValueFactory(new PropertyValueFactory<TransferField, String>("categoryStr"));
-			depositCol.setCellValueFactory(new PropertyValueFactory<TransferField, String>("depositStr"));
-			withdrawlCol.setCellValueFactory(new PropertyValueFactory<TransferField, String>("withdrawlStr"));
-			balanceCol.setCellValueFactory(new PropertyValueFactory<TransferField, String>("balanceStr"));
-
 
 			Main.assets.getAssetsList().get(assetIndex).setObservableTransferField(FXCollections.observableArrayList(Main.assets.getAssetsList().get(assetIndex).getTransferField()));
 			tableView.setItems(Main.assets.getAssetsList().get(assetIndex).getObservableTransferField());
@@ -79,7 +57,5 @@ public class FXMLAccountFieldController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-
 	}
 }

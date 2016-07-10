@@ -206,11 +206,9 @@ public class FXMLChartTabController {
 		switch (xScale) {
 		case DAILY:
 			for (String key : data.keySet()) {
-				System.out.println(key);
 				totalSeries.getData().add(new XYChart.Data<String, Number>(key, data.get(key)));
 			}
 			break;
-
 		default:
 			break;
 		}

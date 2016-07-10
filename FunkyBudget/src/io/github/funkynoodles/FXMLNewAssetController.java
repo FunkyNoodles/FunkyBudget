@@ -79,10 +79,6 @@ public class FXMLNewAssetController {
 			newTab.setContent(tabContent);
 			newTab.setId("tab" + assetName);
 
-			// Populate choice box
-			ComboBox<String> comboBox = (ComboBox<String>)((HBox)tabContent.getChildren().get(2)).getChildren().get(3);
-			EnumUtils.populateCategoryComboBox(comboBox, newAsset);
-
 			Main.assets.insert(newAsset);
 
 			TableView<TransferField> tableView = (TableView<TransferField>)tabContent.getChildren().get(1);

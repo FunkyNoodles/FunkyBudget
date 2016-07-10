@@ -16,8 +16,7 @@ public class TransferField implements Comparable<TransferField>, Comparator<Tran
 	private SimpleStringProperty dateStr = new SimpleStringProperty();
 	private SimpleStringProperty detailStr = new SimpleStringProperty();
 	private SimpleStringProperty categoryStr = new SimpleStringProperty();
-	private SimpleStringProperty depositStr = new SimpleStringProperty();
-	private SimpleStringProperty withdrawlStr = new SimpleStringProperty();
+	private SimpleStringProperty amountStr = new SimpleStringProperty();
 	private SimpleStringProperty balanceStr = new SimpleStringProperty();
 
 	public TransferField(LocalDate d, double amountNum, String detail, Category cat){
@@ -38,7 +37,7 @@ public class TransferField implements Comparable<TransferField>, Comparator<Tran
 		int decimalIndex = amountString.indexOf(".");
 
 		// Handle when the number is too big and in exponential form
-		// I wish I had enough money to be expressed in exponential form
+		// I wish I had enough money that could be expressed in exponential form
 		int eIndex = amountString.indexOf("E");
 		String eStr = "";
 		if (eIndex != -1) {
@@ -47,12 +46,7 @@ public class TransferField implements Comparable<TransferField>, Comparator<Tran
 		if (amountString.length() >= decimalIndex + 3) {
 			amountString = amountString.substring(0,decimalIndex + 3) + eStr;;
 		}
-		if(amountNum > 0){
-			depositStr.setValue(amountString);
-		}else if(amountNum < 0){
-			withdrawlStr.setValue(amountString.substring(1));
-		}else{
-		}
+		amountStr.setValue(amountString);
 		setCategory(cat);
 		categoryStr.setValue(EnumUtils.categoryMap.get(cat));
 		setCurrentBalance(cb);
@@ -112,22 +106,6 @@ public class TransferField implements Comparable<TransferField>, Comparator<Tran
 		this.categoryStr = categoryStr;
 	}
 
-	public String getDepositStr() {
-		return depositStr.get();
-	}
-
-	public void setDepositStr(SimpleStringProperty depositStr) {
-		this.depositStr = depositStr;
-	}
-
-	public String getWithdrawlStr() {
-		return withdrawlStr.get();
-	}
-
-	public void setWithdrawlStr(SimpleStringProperty withdrawlStr) {
-		this.withdrawlStr = withdrawlStr;
-	}
-
 	public double getCurrentBalance() {
 		return currentBalance;
 	}
@@ -151,8 +129,8 @@ public class TransferField implements Comparable<TransferField>, Comparator<Tran
 		return str;
 	}
 
-	public void setBalanceStr(SimpleStringProperty balanceStr) {
-		this.balanceStr = balanceStr;
+	public void setBalanceStr(String balanceStr) {
+		this.balanceStr.set(balanceStr);
 	}
 
 	@Override
@@ -164,4 +142,23 @@ public class TransferField implements Comparable<TransferField>, Comparator<Tran
 	public int compare(TransferField o1, TransferField o2) {
 		return o1.compareTo(o2);
 	}
+
+	public String getAmountStr() {
+		String str = amountStr.get();
+		int eIndex = str.indexOf("E");
+		String eStr = "";
+		if (eIndex != -1) {
+			eStr = str.substring(eIndex);
+		}
+		int decimalIndex = str.indexOf(".");
+		if (str.length() >= decimalIndex + 3) {
+			str = str.substring(0,decimalIndex + 3) + eStr;
+		}
+		return str;
+	}
+
+	public void setAmountStr(SimpleStringProperty amountStr) {
+		this.amountStr = amountStr;
+	}
+
 }
