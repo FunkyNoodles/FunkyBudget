@@ -67,6 +67,7 @@ public class TransferField implements Comparable<TransferField>, Comparator<Tran
 
 	public void setAmount(double amount) {
 		this.amount = amount;
+		setAmountStr(Double.toString(amount));
 	}
 	public String getDetail() {
 		return detail;
@@ -74,46 +75,36 @@ public class TransferField implements Comparable<TransferField>, Comparator<Tran
 	public void setDetail(String detail) {
 		this.detail = detail;
 	}
-
 	public Category getCategory() {
 		return category;
 	}
-
 	public void setCategory(Category category) {
 		this.category = category;
 	}
-
 	public String getDateStr() {
 		return dateStr.get();
 	}
-
 	public void setDateStr(SimpleStringProperty dateStr) {
 		this.dateStr = dateStr;
 	}
 	public String getDetailStr() {
 		return detailStr.get();
 	}
-
 	public void setDetailStr(SimpleStringProperty detailStr) {
 		this.detailStr = detailStr;
 	}
-
 	public String getCategoryStr() {
 		return categoryStr.get();
 	}
-
 	public void setCategoryStr(SimpleStringProperty categoryStr) {
 		this.categoryStr = categoryStr;
 	}
-
 	public double getCurrentBalance() {
 		return currentBalance;
 	}
-
 	public void setCurrentBalance(double currentBalance) {
 		this.currentBalance = currentBalance;
 	}
-
 	public String getBalanceStr() {
 		String str = balanceStr.get();
 		str = Double.toString(currentBalance);
@@ -128,21 +119,17 @@ public class TransferField implements Comparable<TransferField>, Comparator<Tran
 		}
 		return str;
 	}
-
 	public void setBalanceStr(String balanceStr) {
 		this.balanceStr.set(balanceStr);
 	}
-
 	@Override
 	public int compareTo(TransferField o) {
 		return date.toString().compareTo(o.getDateStr());
 	}
-
 	@Override
 	public int compare(TransferField o1, TransferField o2) {
 		return o1.compareTo(o2);
 	}
-
 	public String getAmountStr() {
 		String str = amountStr.get();
 		int eIndex = str.indexOf("E");
@@ -156,9 +143,10 @@ public class TransferField implements Comparable<TransferField>, Comparator<Tran
 		}
 		return str;
 	}
-
+	public void setAmountStr(String amountStr) {
+		this.amountStr.set(amountStr);
+	}
 	public void setAmountStr(SimpleStringProperty amountStr) {
 		this.amountStr = amountStr;
 	}
-
 }
