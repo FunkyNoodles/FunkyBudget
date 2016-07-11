@@ -1,7 +1,12 @@
 package io.github.funkynoodles;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.Date;import com.google.common.collect.Table.Cell;
 
+import io.github.funkynoodles.FXMLAccountTabController.DateEditingCell;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,6 +21,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
@@ -28,6 +34,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.util.Callback;
 
 public class FXMLAccountTabController {
 
@@ -145,6 +152,18 @@ public class FXMLAccountTabController {
 
 		// Date Column
 		dateCol.setCellValueFactory(new PropertyValueFactory<TransferField, String>("dateStr"));
+		Callback<TableColumn<TransferField, String>, TableCell<TransferField, String>> dateCellFactory = (TableColumn<TransferField, String> param) -> new DateEditingCell();
+		dateCol.setCellFactory(dateCellFactory);
+		dateCol.setOnEditCommit(
+				new EventHandler<CellEditEvent<TransferField, String>>(){
+					@Override
+					public void handle(CellEditEvent<TransferField, String> e){
+						TransferField tf = (TransferField) e.getTableView().getItems().get(e.getTablePosition().getRow());
+						tf.setDate(LocalDate.parse(e.getNewValue()));
+						Main.changed = true;
+					}
+				});
+
 
 		// Detail Column
 		detailCol.setCellValueFactory(new PropertyValueFactory<TransferField, String>("detailStr"));
@@ -238,4 +257,70 @@ public class FXMLAccountTabController {
 		});
 		balanceCol.setCellValueFactory(new PropertyValueFactory<TransferField, String>("balanceStr"));
 	}
+
+	// Date editing cell
+	class DateEditingCell extends TableCell<TransferField, String> {
+
+        private DatePicker datePicker;
+
+        private DateEditingCell() {
+        }
+
+        @Override
+        public void startEdit() {
+            if (!isEmpty()) {
+                super.startEdit();
+                createDatePicker();
+                setText(null);
+                setGraphic(datePicker);
+            }
+        }
+
+        @Override
+        public void cancelEdit() {
+            super.cancelEdit();
+
+            setText(getDate().toString());
+            setGraphic(null);
+        }
+
+        @Override
+        public void updateItem(String item, boolean empty) {
+            super.updateItem(item, empty);
+
+            if (empty) {
+                setText(null);
+                setGraphic(null);
+            } else {
+                if (isEditing()) {
+                    if (datePicker != null) {
+                        datePicker.setValue(getDate());
+                    }
+                    setText(null);
+                    setGraphic(datePicker);
+                } else {
+                    setText(getDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)));
+                    setGraphic(null);
+                }
+            }
+        }
+
+        private void createDatePicker() {
+            datePicker = new DatePicker(getDate());
+            datePicker.setMinWidth(this.getWidth() - this.getGraphicTextGap() * 2);
+            datePicker.setOnAction((e) -> {
+                System.out.println("Committed: " + datePicker.getValue().toString());
+                commitEdit(datePicker.getValue().toString());
+            });
+//            datePicker.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+//                if (!newValue) {
+//                    commitEdit(Date.from(datePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+//                }
+//            });
+        }
+
+        private LocalDate getDate() {
+            return getItem() == null ? LocalDate.now() : LocalDate.parse(getItem());
+        }
+    }
 }
