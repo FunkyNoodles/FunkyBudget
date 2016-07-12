@@ -85,9 +85,8 @@ public class Main extends Application{
 			e.printStackTrace();
 			return false;
 		}
-
 		TabPane tabPane = (TabPane) primaryStage.getScene().lookup("#tabPane");
-
+		// Find the first tab, if not the root tab, something's wrong
 		Tab rootTab = null;
 		for (int i = 0; i < tabPane.getTabs().size(); ++i) {
 			rootTab = tabPane.getTabs().get(i);
@@ -96,7 +95,20 @@ public class Main extends Application{
 			}
 			return false;
 		}
+		// Close existing tabs
+		Tab tab = null;
+		while (tabPane.getTabs().size() > 1) {
+			tab = tabPane.getTabs().get(1);
+			tabPane.getTabs().remove(tab);
+		}
 		VBox rootTabVBox = (VBox)rootTab.getContent();
+		int numberOfExistingFields = rootTabVBox.getChildren().size() - 1;
+		// Remove existing account fields
+		if (rootTabVBox.getChildren().size() > 2) {
+			for (int i = 1; i < numberOfExistingFields; i++) {
+				rootTabVBox.getChildren().remove(1);
+			}
+		}
 		for (int i = 0; i < assets.size(); i++) {
 			String assetName = assets.getAssetsList().get(i).getName();
 			String assetBalance = assets.getAssetsList().get(i).getBalanceStr();
@@ -109,6 +121,7 @@ public class Main extends Application{
 				e.printStackTrace();
 			}
 		}
+		Main.changed = false;
 		return true;
 	}
 
