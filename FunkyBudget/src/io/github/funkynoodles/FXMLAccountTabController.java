@@ -129,7 +129,8 @@ public class FXMLAccountTabController {
 			}
 		}
 		assetBalanceText.setText(asset.getBalanceStr());
-
+		// Refresh table workaround
+		tableView.setItems(asset.getObservableTransferField());
 		Main.changed = true;
     }
 

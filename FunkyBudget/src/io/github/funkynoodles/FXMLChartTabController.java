@@ -1,7 +1,9 @@
 package io.github.funkynoodles;
 
 import java.io.IOException;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.Month;
 import java.time.temporal.ChronoUnit;
 import java.util.Map;
 import java.util.TreeMap;
@@ -139,14 +141,12 @@ public class FXMLChartTabController {
 			if (tf.getCategoryStr().contains("Expense:") && isBetweenDatesInclusive(tf.getDate(), fromDate, toDate)) {
 				Category c = tf.getCategory();
 				data[c.ordinal()] += Math.abs(tf.getAmount());
-				//totalAmount += Math.abs(tf.getAmount());
 			}
 		}
 		// If not zero, then add entry
 		for (int i = 0; i < data.length; i++) {
 			if (data[i] != 0.0) {
 				chartData.add(new PieChart.Data(EnumUtils.categoryMap.get(Category.values()[i]).substring(8) ,Math.abs(data[i])));
-				//totalAmount += Math.abs(data[i]); // Accumulate amount
 			}
 		}
 		// Create pie chart
@@ -182,7 +182,7 @@ public class FXMLChartTabController {
 		final NumberAxis yAxis = new NumberAxis();
 
 		xAxis.setLabel("Time");
-		yAxis.setLabel("Expense");
+		yAxis.setLabel("Expenses");
 		// Line Chart
 		LineChart<String, Number> lineChart = new LineChart<>(xAxis, yAxis);
 		lineChart.setTitle("Expense from " + fromDate.toString() + " to " + toDate.toString());
@@ -203,11 +203,59 @@ public class FXMLChartTabController {
 				}
 			}
 		}
+		LocalDate date;
 		switch (xScale) {
+		// TODO Add all xScale options
 		case DAILY:
+			// Add to series
 			for (String key : data.keySet()) {
 				totalSeries.getData().add(new XYChart.Data<String, Number>(key, data.get(key)));
 			}
+			xAxis.setLabel("Time");
+			break;
+		case WEEKLY:
+			// Collapse data down to weekly
+			Map<String, Double> weekData = new TreeMap<>();
+			for (String key : data.keySet()) {
+				date = LocalDate.parse(key);
+				String dateStr = date.toString();
+				DayOfWeek week = date.getDayOfWeek();
+				int daysAfterSun = week.getValue() % 7;
+				LocalDate sunday = date.minusDays(daysAfterSun);
+				String sundayStr = sunday.toString();
+				if (weekData.containsKey(sundayStr)) {
+					weekData.put(sundayStr, weekData.get(sundayStr) + data.get(dateStr));
+				}else{
+					weekData.put(sundayStr, data.get(dateStr));
+				}
+			}
+			// Add to series
+			for (String key : weekData.keySet()) {
+				totalSeries.getData().add(new XYChart.Data<String, Number>(key, weekData.get(key)));
+			}
+			xAxis.setLabel("Time (Week of)");
+			break;
+		case MONTHYLY:
+			// Collapse data down to monthly
+			Map<String, Double> monthData = new TreeMap<String, Double>();
+			for (String key : data.keySet()) {
+				date = LocalDate.parse(key);
+				String dateStr = date.toString();
+				int year = date.getYear();
+				Month month = date.getMonth();
+				String monthStr = month.toString().substring(0, 3);
+				String yearMonthStr = Integer.toString(year) + "-" + monthStr;
+				if (monthData.containsKey(yearMonthStr)) {
+					monthData.put(yearMonthStr, monthData.get(yearMonthStr) + data.get(dateStr));
+				}else{
+					monthData.put(yearMonthStr, data.get(dateStr));
+				}
+			}
+			// Add to series
+			for (String key : monthData.keySet()) {
+				totalSeries.getData().add(new XYChart.Data<String, Number>(key, monthData.get(key)));
+			}
+			xAxis.setLabel("Time");
 			break;
 		default:
 			break;
