@@ -2,6 +2,7 @@ package io.github.funkynoodles;
 
 public class Reference {
 
+	// Program parameters
 	public static final String NAME = "Funky Budget";
 	public static final String VERSION = "0.1";
 
@@ -14,4 +15,9 @@ public class Reference {
 
 	public static final String CHART_TYPE_EXPENSE_PIE_CHART = "Expense Pie Chart";
 	public static final String CHART_TYPE_EXPENSE_OVER_TIME = "Expense over Time";
+
+	public static final String CHART_X_AXIS_SCALE_DAILY = "Daily";
+	public static final String CHART_X_AXIS_SCALE_WEEKLY = "Weekly";
+	public static final String CHART_X_AXIS_SCALE_MONTHLY = "Monthly";
+	public static final String CHART_X_AXIS_SCALE_YEARLY = "Yearly";
 }

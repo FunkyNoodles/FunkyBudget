@@ -123,6 +123,12 @@ public class FXMLChartTabController {
 			break;
 		case Reference.CHART_TYPE_EXPENSE_OVER_TIME:
 			generateExpenseOverTimeChart(asset, fromDate, toDate);
+			try {
+				VBox lineChartAdvanced = (VBox)FXMLLoader.load(getClass().getResource("fxml_expense_over_time_advanced.fxml"));
+				borderPane.setRight(lineChartAdvanced);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			break;
 		default:
 			break;
@@ -157,25 +163,18 @@ public class FXMLChartTabController {
 		borderPane.setCenter(pieChart);
 	}
 
-	enum XAxisScale{
-		DAILY,
-		WEEKLY,
-		MONTHYLY,
-		YEARLY,
-	}
-
 	private void generateExpenseOverTimeChart(Asset asset, LocalDate fromDate, LocalDate toDate){
 		long days = ChronoUnit.DAYS.between(fromDate, toDate);
 		// Set scale of the chart
-		XAxisScale xScale;
+		String xScale;
 		if (days <= 28) {
-			xScale = XAxisScale.DAILY;
+			xScale = Reference.CHART_X_AXIS_SCALE_DAILY;
 		}else if (days <= 7 * 20) {
-			xScale = XAxisScale.WEEKLY;
+			xScale = Reference.CHART_X_AXIS_SCALE_WEEKLY;
 		}else if (days <= 24 * 30) {
-			xScale = XAxisScale.MONTHYLY;
+			xScale = Reference.CHART_X_AXIS_SCALE_MONTHLY;
 		}else{
-			xScale = XAxisScale.YEARLY;
+			xScale = Reference.CHART_X_AXIS_SCALE_YEARLY;
 		}
 		// Axes
 		final CategoryAxis xAxis = new CategoryAxis();
@@ -206,14 +205,16 @@ public class FXMLChartTabController {
 		LocalDate date;
 		// Add series using options
 		switch (xScale) {
-		case DAILY:
+		case Reference.CHART_X_AXIS_SCALE_DAILY:
 			// Add to series
 			for (String key : data.keySet()) {
-				totalSeries.getData().add(new XYChart.Data<String, Number>(key, data.get(key)));
+				XYChart.Data<String, Number> d = new XYChart.Data<String, Number>(key, data.get(key));
+				d.setNode(new ChartNode(d.getYValue()));
+				totalSeries.getData().add(d);
 			}
 			xAxis.setLabel("Time (Daily)");
 			break;
-		case WEEKLY:
+		case Reference.CHART_X_AXIS_SCALE_WEEKLY:
 			// Collapse data down to weekly
 			Map<String, Double> weekData = new TreeMap<>();
 			for (String key : data.keySet()) {
@@ -231,11 +232,13 @@ public class FXMLChartTabController {
 			}
 			// Add to series
 			for (String key : weekData.keySet()) {
-				totalSeries.getData().add(new XYChart.Data<String, Number>(key, weekData.get(key)));
+				XYChart.Data<String, Number> d = new XYChart.Data<String, Number>(key, weekData.get(key));
+				d.setNode(new ChartNode(d.getYValue()));
+				totalSeries.getData().add(d);
 			}
 			xAxis.setLabel("Time (Weekly)");
 			break;
-		case MONTHYLY:
+		case Reference.CHART_X_AXIS_SCALE_MONTHLY:
 			// Collapse data down to monthly
 			Map<String, Double> monthData = new TreeMap<String, Double>();
 			for (String key : data.keySet()) {
@@ -253,11 +256,13 @@ public class FXMLChartTabController {
 			}
 			// Add to series
 			for (String key : monthData.keySet()) {
-				totalSeries.getData().add(new XYChart.Data<String, Number>(key, monthData.get(key)));
+				XYChart.Data<String, Number> d = new XYChart.Data<String, Number>(key, monthData.get(key));
+				d.setNode(new ChartNode(d.getYValue()));
+				totalSeries.getData().add(d);
 			}
 			xAxis.setLabel("Time (Monthly)");
 			break;
-		case YEARLY:
+		case Reference.CHART_X_AXIS_SCALE_YEARLY:
 			// Collapse data down to yearly
 			Map<String, Double> yearData = new TreeMap<>();
 			for (String key : data.keySet()) {
@@ -273,7 +278,9 @@ public class FXMLChartTabController {
 			}
 			// Add to series
 			for (String key : yearData.keySet()) {
-				totalSeries.getData().add(new XYChart.Data<String, Number>(key, yearData.get(key)));
+				XYChart.Data<String, Number> d = new XYChart.Data<String, Number>(key, yearData.get(key));
+				d.setNode(new ChartNode(d.getYValue()));
+				totalSeries.getData().add(d);
 			}
 			xAxis.setLabel("Time (Yearly)");
 			break;
