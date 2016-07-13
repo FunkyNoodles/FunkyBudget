@@ -204,14 +204,14 @@ public class FXMLChartTabController {
 			}
 		}
 		LocalDate date;
+		// Add series using options
 		switch (xScale) {
-		// TODO Add all xScale options
 		case DAILY:
 			// Add to series
 			for (String key : data.keySet()) {
 				totalSeries.getData().add(new XYChart.Data<String, Number>(key, data.get(key)));
 			}
-			xAxis.setLabel("Time");
+			xAxis.setLabel("Time (Daily)");
 			break;
 		case WEEKLY:
 			// Collapse data down to weekly
@@ -233,7 +233,7 @@ public class FXMLChartTabController {
 			for (String key : weekData.keySet()) {
 				totalSeries.getData().add(new XYChart.Data<String, Number>(key, weekData.get(key)));
 			}
-			xAxis.setLabel("Time (Week of)");
+			xAxis.setLabel("Time (Weekly)");
 			break;
 		case MONTHYLY:
 			// Collapse data down to monthly
@@ -255,7 +255,27 @@ public class FXMLChartTabController {
 			for (String key : monthData.keySet()) {
 				totalSeries.getData().add(new XYChart.Data<String, Number>(key, monthData.get(key)));
 			}
-			xAxis.setLabel("Time");
+			xAxis.setLabel("Time (Monthly)");
+			break;
+		case YEARLY:
+			// Collapse data down to yearly
+			Map<String, Double> yearData = new TreeMap<>();
+			for (String key : data.keySet()) {
+				date = LocalDate.parse(key);
+				String dateStr = date.toString();
+				int year = date.getYear();
+				String yearStr = Integer.toString(year);
+				if (yearData.containsKey(yearStr)) {
+					yearData.put(yearStr, yearData.get(yearStr) + data.get(dateStr));
+				}else{
+					yearData.put(yearStr, data.get(dateStr));
+				}
+			}
+			// Add to series
+			for (String key : yearData.keySet()) {
+				totalSeries.getData().add(new XYChart.Data<String, Number>(key, yearData.get(key)));
+			}
+			xAxis.setLabel("Time (Yearly)");
 			break;
 		default:
 			break;
