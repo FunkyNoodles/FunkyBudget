@@ -1,5 +1,7 @@
 package io.github.funkynoodles;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
@@ -8,6 +10,7 @@ import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
@@ -48,5 +51,15 @@ public class FXMLExpenseOverTimeAdvancedController {
 				Reference.CHART_X_AXIS_SCALE_WEEKLY,
 				Reference.CHART_X_AXIS_SCALE_MONTHLY,
 				Reference.CHART_X_AXIS_SCALE_YEARLY));
+		xAxisScaleComboBox.valueProperty().addListener(new ChangeListener<String>(){
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				borderPane = (BorderPane)vBox.getParent();
+				String currentXScale = ((Label)borderPane.lookup("#infoXScaleLabel")).getText();
+				if (!currentXScale.equals(newValue)) {
+					ChartGenerator.generateExpenseOverTimeChart(borderPane, false, newValue);
+				}
+			}
+		});
 	}
 }

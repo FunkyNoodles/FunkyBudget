@@ -52,6 +52,34 @@
                </children>
             </HBox>
             <Button fx:id="generateButton" mnemonicParsing="false" onAction="#handleGenerateButton" text="Generate" />
+            <Separator prefWidth="200.0" />
+            <HBox alignment="TOP_CENTER">
+               <children>
+                  <Label text="Chart Info" />
+               </children>
+            </HBox>
+            <GridPane alignment="CENTER">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label text="Asset" GridPane.halignment="CENTER" />
+                  <Label fx:id="infoAssetSelectedLabel" alignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                  <Label text="From" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <Label fx:id="infoFromDateLabel" alignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <Label alignment="CENTER" text="To" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                  <Label fx:id="infoToDateLabel" alignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                  <Label text="X-Axis Scale" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+                  <Label fx:id="infoXScaleLabel" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+               </children>
+            </GridPane>
          </children>
          <opaqueInsets>
             <Insets />
