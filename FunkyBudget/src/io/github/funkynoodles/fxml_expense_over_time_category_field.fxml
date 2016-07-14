@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.HBox?>
+
+
+<HBox fx:id="hBox" spacing="10.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="io.github.funkynoodles.FXMLExpenseOverTimeCategoryFieldController">
+   <children>
+      <Label fx:id="categoryLabel" prefHeight="31.0" prefWidth="120.0" text="Label" />
+      <CheckBox fx:id="displayCheckBox" mnemonicParsing="false" onAction="#handleDisplayCheckBoxToggle" prefHeight="31.0" text="Display" />
+      <Button fx:id="removeButton" mnemonicParsing="false" onAction="#handleRemoveButton" text="Remove" />
+   </children>
+</HBox>

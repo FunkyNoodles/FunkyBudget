@@ -94,20 +94,47 @@ public class ChartGenerator {
 		final CategoryAxis xAxis = new CategoryAxis();
 		final NumberAxis yAxis = new NumberAxis();
 
-		xAxis.setLabel("Time");
+
+		// Set axis labels
+		switch (xScale) {
+		case Reference.CHART_X_AXIS_SCALE_DAILY:
+			xAxis.setLabel("Time (Daily)");
+			break;
+		case Reference.CHART_X_AXIS_SCALE_WEEKLY:
+			xAxis.setLabel("Time (Weekly)");
+			break;
+		case Reference.CHART_X_AXIS_SCALE_MONTHLY:
+			xAxis.setLabel("Time (Monthly)");
+			break;
+		case Reference.CHART_X_AXIS_SCALE_YEARLY:
+			xAxis.setLabel("Time (Yearly)");
+			break;
+		default:
+			break;
+		}
 		yAxis.setLabel("Expenses");
 		// Line Chart
 		LineChart<String, Number> lineChart = new LineChart<>(xAxis, yAxis);
 		lineChart.setTitle("Expense from " + fromDate.toString() + " to " + toDate.toString());
+		// Generate total series
+		XYChart.Series<String, Number> totalSeries = generateExpenseOverTimeSeries(asset, fromDate, toDate, "Expense:", 0, xScale);
+		// Setup Chart Info
+		((Label)borderPane.lookup("#infoXScaleLabel")).setText(xScale);
+		// Setup Chart
+		lineChart.getData().add(totalSeries);
+		borderPane.setCenter(lineChart);
+	}
+
+	public static XYChart.Series<String, Number> generateExpenseOverTimeSeries(Asset asset, LocalDate fromDate, LocalDate toDate, String categoryFilter, int lineChartSize, String xScale){
 		// Populate series
-		XYChart.Series<String, Number> totalSeries = new XYChart.Series<>();
-		totalSeries.setName("Total Expense");
+		XYChart.Series<String, Number> series = new XYChart.Series<>();
+		series.setName("Total Expense");
 		// Collect data
 		TransferField tf;
 		Map<String, Double> data = new TreeMap<String, Double>();
 		for (int i = 0; i < asset.size(); i++) {
 			tf = asset.getTransferField().get(i);
-			if (tf.getCategoryStr().contains("Expense:") && isBetweenDatesInclusive(tf.getDate(), fromDate, toDate)) {
+			if (tf.getCategoryStr().contains(categoryFilter) && isBetweenDatesInclusive(tf.getDate(), fromDate, toDate)) {
 				String dateStr = tf.getDateStr();
 				if (data.containsKey(dateStr)) {
 					data.put(dateStr, data.get(dateStr) + Math.abs(tf.getAmount()));
@@ -123,10 +150,9 @@ public class ChartGenerator {
 			// Add to series
 			for (String key : data.keySet()) {
 				XYChart.Data<String, Number> d = new XYChart.Data<String, Number>(key, data.get(key));
-				d.setNode(new ChartNode(d.getYValue()));
-				totalSeries.getData().add(d);
+				d.setNode(new ChartNode(d.getYValue(), lineChartSize));
+				series.getData().add(d);
 			}
-			xAxis.setLabel("Time (Daily)");
 			break;
 		case Reference.CHART_X_AXIS_SCALE_WEEKLY:
 			// Collapse data down to weekly
@@ -147,10 +173,9 @@ public class ChartGenerator {
 			// Add to series
 			for (String key : weekData.keySet()) {
 				XYChart.Data<String, Number> d = new XYChart.Data<String, Number>(key, weekData.get(key));
-				d.setNode(new ChartNode(d.getYValue()));
-				totalSeries.getData().add(d);
+				d.setNode(new ChartNode(d.getYValue(), lineChartSize));
+				series.getData().add(d);
 			}
-			xAxis.setLabel("Time (Weekly)");
 			break;
 		case Reference.CHART_X_AXIS_SCALE_MONTHLY:
 			// Collapse data down to monthly
@@ -171,10 +196,9 @@ public class ChartGenerator {
 			// Add to series
 			for (String key : monthData.keySet()) {
 				XYChart.Data<String, Number> d = new XYChart.Data<String, Number>(key, monthData.get(key));
-				d.setNode(new ChartNode(d.getYValue()));
-				totalSeries.getData().add(d);
+				d.setNode(new ChartNode(d.getYValue(), lineChartSize));
+				series.getData().add(d);
 			}
-			xAxis.setLabel("Time (Monthly)");
 			break;
 		case Reference.CHART_X_AXIS_SCALE_YEARLY:
 			// Collapse data down to yearly
@@ -193,19 +217,14 @@ public class ChartGenerator {
 			// Add to series
 			for (String key : yearData.keySet()) {
 				XYChart.Data<String, Number> d = new XYChart.Data<String, Number>(key, yearData.get(key));
-				d.setNode(new ChartNode(d.getYValue()));
-				totalSeries.getData().add(d);
+				d.setNode(new ChartNode(d.getYValue(), lineChartSize));
+				series.getData().add(d);
 			}
-			xAxis.setLabel("Time (Yearly)");
 			break;
 		default:
 			break;
 		}
-		// Setup Chart Info
-		((Label)borderPane.lookup("#infoXScaleLabel")).setText(xScale);
-		// Setup Chart
-		lineChart.getData().add(totalSeries);
-		borderPane.setCenter(lineChart);
+		return series;
 	}
 
 	private static boolean isBetweenDatesInclusive(LocalDate date, LocalDate fromDate, LocalDate toDate){

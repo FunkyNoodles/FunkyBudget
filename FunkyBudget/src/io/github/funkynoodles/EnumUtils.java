@@ -69,9 +69,39 @@ public class EnumUtils {
 	}
 
 	public static void populateCategoryComboBox(ComboBox<String> comboBox, Asset a){
+		populateCategoryComboBox(comboBox, a, 0);
+	}
+
+	/**
+	 *
+	 * @param comboBox
+	 * @param a
+	 * @param cmd 0 means all categories, 1 means only expenses, 2 means only income
+	 */
+	public static void populateCategoryComboBox(ComboBox<String> comboBox, Asset a, int cmd){
 		ObservableList<String> list = FXCollections.observableArrayList();
-		for(Category c : Category.values()){
-			list.add(categoryMap.get(c));
+		switch (cmd) {
+		case 0:
+			for(Category c : Category.values()){
+				list.add(categoryMap.get(c));
+			}
+			break;
+		case 1:
+			for(Category c : Category.values()){
+				String cStr = categoryMap.get(c);
+				if (cStr.contains("Expense:")) {
+					list.add(cStr);
+				}
+			}
+		case 2:
+			for(Category c : Category.values()){
+				String cStr = categoryMap.get(c);
+				if (cStr.contains("Income:")) {
+					list.add(cStr);
+				}
+			}
+		default:
+			break;
 		}
 		comboBox.setItems(list);
 	}

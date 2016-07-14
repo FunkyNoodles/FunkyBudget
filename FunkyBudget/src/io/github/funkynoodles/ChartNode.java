@@ -10,9 +10,9 @@ public class ChartNode extends StackPane{
 
 	final private Label label = new Label();
 
-	public ChartNode(Number number) {
+	public ChartNode(Number number, int seriesIndex) {
 		label.setText(number.toString());
-		label.getStyleClass().addAll("default-color0", "chart-line-symbol", "chart-series-line");
+		label.getStyleClass().addAll("default-color" + Integer.toString(seriesIndex), "chart-line-symbol", "chart-series-line");
 		label.setMinSize(Label.USE_PREF_SIZE, Label.USE_PREF_SIZE);
 		setMinSize(Label.USE_PREF_SIZE, Label.USE_PREF_SIZE);
 

@@ -26,9 +26,14 @@
          </children>
       </HBox>
       <Separator prefWidth="200.0" />
-      <VBox fx:id="dataSetVBox">
+      <VBox fx:id="dataSetVBox" spacing="10.0">
          <children>
-            <Button fx:id="newDataSetButton" mnemonicParsing="false" text="New Data Set..." />
+            <HBox alignment="TOP_CENTER" spacing="10.0">
+               <children>
+                  <ComboBox fx:id="categoryComboBox" prefWidth="150.0" />
+                  <Button fx:id="newDataSetButton" mnemonicParsing="false" onAction="#handleNewDataSetButton" text="New Series..." />
+               </children>
+            </HBox>
          </children>
       </VBox>
    </children>
