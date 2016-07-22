@@ -70,6 +70,7 @@ public class FXMLMainController {
     	SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
     	try {
     		VBox tabContent = (VBox)FXMLLoader.load(getClass().getResource("fxml_budget_tab.fxml"));
+    		Scene scene = tabPane.getScene();
 			newTab.setContent(tabContent);
 			tabPane.getTabs().add(newTab);
 			selectionModel.select(newTab);

@@ -62,6 +62,28 @@ public class EnumUtils {
 		categoryMap.put(Category.INCOME_SALARY, "Income:Salary");
 	}
 
+	/**
+	 * Ge general category,
+	 * for example if the category is EXPENSE:AUTO:FEES
+	 * the general category is AUTO
+	 * @param c
+	 * @return
+	 */
+	public static String getGeneralCategory(Category c) {
+		String cat = categoryMap.get(c);
+		return getGeneralCategory(cat);
+	}
+
+	public static String getGeneralCategory(String cat) {
+		int firstColon = cat.indexOf(":");
+		int secondColon = cat.indexOf(":", firstColon + 1);
+		if (secondColon < 0) {
+			return cat.substring(firstColon + 1);
+		}else {
+			return cat.substring(firstColon + 1, secondColon);
+		}
+	}
+
 	public static void populateAssetTypeMap(){
 		assetTypeMap.put(AssetType.BANK_CHECKINGS, "Bank Checkings");
 		assetTypeMap.put(AssetType.BANK_SAVINGS, "Bank Savings");
