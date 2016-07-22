@@ -163,11 +163,12 @@ public class ChartGenerator {
 				DayOfWeek week = date.getDayOfWeek();
 				int daysAfterSun = week.getValue() % 7;
 				LocalDate sunday = date.minusDays(daysAfterSun);
-				String sundayStr = sunday.toString();
-				if (weekData.containsKey(sundayStr)) {
-					weekData.put(sundayStr, weekData.get(sundayStr) + data.get(dateStr));
+				LocalDate wednesday = sunday.plusDays(3);
+				String wednesdayStr = wednesday.toString();
+				if (weekData.containsKey(wednesdayStr)) {
+					weekData.put(wednesdayStr, weekData.get(wednesdayStr) + data.get(dateStr));
 				}else{
-					weekData.put(sundayStr, data.get(dateStr));
+					weekData.put(wednesdayStr, data.get(dateStr));
 				}
 			}
 			// Add to series

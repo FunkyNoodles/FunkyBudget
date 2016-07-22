@@ -18,6 +18,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class FXMLMainController {
@@ -55,6 +56,20 @@ public class FXMLMainController {
     	SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
     	try {
 			BorderPane tabContent = (BorderPane)FXMLLoader.load(getClass().getResource("fxml_chart_tab.fxml"));
+			newTab.setContent(tabContent);
+			tabPane.getTabs().add(newTab);
+			selectionModel.select(newTab);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    }
+
+    @FXML
+    protected void handleReportBudget(){
+    	Tab newTab = new Tab("Budget " + Integer.toString(++graphOpenedCount));
+    	SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
+    	try {
+    		VBox tabContent = (VBox)FXMLLoader.load(getClass().getResource("fxml_budget_tab.fxml"));
 			newTab.setContent(tabContent);
 			tabPane.getTabs().add(newTab);
 			selectionModel.select(newTab);
