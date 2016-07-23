@@ -29,7 +29,7 @@ public class ChartGenerator {
 		TransferField tf;
 		for (int i = 0; i < asset.size(); i++) {
 			tf = asset.getTransferField().get(i);
-			if (tf.getCategoryStr().contains("Expense:") && isBetweenDatesInclusive(tf.getDate(), fromDate, toDate)) {
+			if (tf.getCategoryStr().contains("Expense:") && DateUtils.isBetweenDatesInclusive(tf.getDate(), fromDate, toDate)) {
 				Category c = tf.getCategory();
 				data[c.ordinal()] += Math.abs(tf.getAmount());
 			}
@@ -134,7 +134,7 @@ public class ChartGenerator {
 		Map<String, Double> data = new TreeMap<String, Double>();
 		for (int i = 0; i < asset.size(); i++) {
 			tf = asset.getTransferField().get(i);
-			if (tf.getCategoryStr().contains(categoryFilter) && isBetweenDatesInclusive(tf.getDate(), fromDate, toDate)) {
+			if (tf.getCategoryStr().contains(categoryFilter) && DateUtils.isBetweenDatesInclusive(tf.getDate(), fromDate, toDate)) {
 				String dateStr = tf.getDateStr();
 				if (data.containsKey(dateStr)) {
 					data.put(dateStr, data.get(dateStr) + Math.abs(tf.getAmount()));
@@ -226,9 +226,5 @@ public class ChartGenerator {
 			break;
 		}
 		return series;
-	}
-
-	private static boolean isBetweenDatesInclusive(LocalDate date, LocalDate fromDate, LocalDate toDate){
-		return !date.isAfter(toDate) && !date.isBefore(fromDate);
 	}
 }

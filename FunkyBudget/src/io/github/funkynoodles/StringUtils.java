@@ -13,6 +13,19 @@ public class StringUtils {
 		if (str.length() >= decimalIndex + 3) {
 			str = str.substring(0,decimalIndex + 3) + eStr;
 		}
+		// Now make sure there are two decimals
+		decimalIndex = str.indexOf(".");
+		int diff = str.length() - decimalIndex;
+		switch (diff){
+		case 1:
+			str += "00";
+			break;
+		case 2:
+			str += "0";
+			break;
+		default:
+			break;
+		}
 		return str;
 	}
 

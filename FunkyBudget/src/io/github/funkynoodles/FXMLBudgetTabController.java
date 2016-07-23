@@ -26,11 +26,10 @@ public class FXMLBudgetTabController {
 	@FXML private ComboBox<String> scaleComboBox;
 
 	final private TreeItem<BudgetTableData> root = new TreeItem<>(new BudgetTableData("Budget Report"));
-	private TreeItem<BudgetTableData> assetItems  = new TreeItem<>(new BudgetTableData("Assets"));
-	private TreeItem<BudgetTableData> incomeItems  = new TreeItem<>(new BudgetTableData("Income"));
-	private TreeItem<BudgetTableData> expenseItems  = new TreeItem<>(new BudgetTableData("Expense"));
+	private TreeItem<BudgetTableData> assetItems  = new TreeItem<>();
+	private TreeItem<BudgetTableData> incomeItems  = new TreeItem<>();
+	private TreeItem<BudgetTableData> expenseItems  = new TreeItem<>();
 
-	private List<BudgetTableData> assetList = new ArrayList<>();
 	private List<BudgetTableData> incomeList = new ArrayList<>();
 	private List<BudgetTableData> expenseList = new ArrayList<>();
 
@@ -78,10 +77,10 @@ public class FXMLBudgetTabController {
 				}
 			}
 		}
-		// Populate all data points
+		// Populate data points
 		for (Asset asset : Main.assets.getAssetsList()) {
 			for (TransferField tf : asset.getTransferField()) {
-				if (isBetweenDatesInclusive(tf.getDate(), fromDate, nowDate)) {
+				if (DateUtils.isBetweenDatesInclusive(tf.getDate(), fromDate, nowDate)) {
 					String cStr = tf.getCategoryStr();
 					if (cStr.contains("Income:")) {
 						String gcStr = EnumUtils.getGeneralCategory(cStr);
@@ -108,6 +107,55 @@ public class FXMLBudgetTabController {
 			expenseItems.getChildren().add(new TreeItem<>(data));
 		});
 
+		// Sum up values for parent nodes
+		BudgetTableData incomeData = new BudgetTableData("Income");
+		BudgetTableData expensData = new BudgetTableData("Expense");
+
+
+		// Sum up assets
+		BudgetTableData assetData = new BudgetTableData("Assets");
+		for (Asset asset : Main.assets.getAssetsList()) {
+			BudgetTableData data = new BudgetTableData(asset.getName());
+			// Populate data
+			for (TransferField tf : asset.getTransferField()) {
+				if (DateUtils.isBetweenDatesInclusive(tf.getDate(), fromDate, nowDate)) {
+					data.add(tf.getDate(), tf.getAmount());
+				}
+			}
+			assetItems.getChildren().add(new TreeItem<>(data));
+		}
+
+		for (LocalDate weekIter = fromDate; weekIter.isBefore(nowDate); weekIter = weekIter.plusWeeks(1)) {
+			// Asset items
+			for (TreeItem<BudgetTableData> item : assetItems.getChildren()) {
+				BudgetTableData data = item.getValue();
+				double amount = data.getDataWeekDouble(weekIter);
+				if (amount == 0.0) {
+					assetData.add(weekIter, amount);
+				}
+			}
+			// Income items
+			for (TreeItem<BudgetTableData> item : incomeItems.getChildren()) {
+				BudgetTableData data = item.getValue();
+				double amount = data.getDataWeekDouble(weekIter);
+				if (amount != 0.0) {
+					incomeData.add(weekIter, amount);
+				}
+			}
+			// Expense items
+			for (TreeItem<BudgetTableData> item : expenseItems.getChildren()) {
+				BudgetTableData data = item.getValue();
+				double amount = data.getDataWeekDouble(weekIter);
+				if (amount != 0.0) {
+					expensData.add(weekIter, amount);
+				}
+			}
+		}
+
+		incomeItems.setValue(incomeData);
+		expenseItems.setValue(expensData);
+		assetItems.setValue(assetData);
+
 		// Populate table
 		treeTableView.setRoot(root);
 		firstColumn.setCellValueFactory(
@@ -125,11 +173,6 @@ public class FXMLBudgetTabController {
             treeTableView.getColumns().add(newCol);
             weekIter = weekIter.plusWeeks(1);
 		}
-
-	}
-
-	private static boolean isBetweenDatesInclusive(LocalDate date, LocalDate fromDate, LocalDate toDate){
-		return !date.isAfter(toDate) && !date.isBefore(fromDate);
 	}
 
 	@FXML

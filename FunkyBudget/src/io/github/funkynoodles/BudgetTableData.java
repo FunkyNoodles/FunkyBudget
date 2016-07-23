@@ -18,7 +18,7 @@ public class BudgetTableData {
 	}
 
 	/**
-	 * Add a data point of this category
+	 * Add a data point of this category,
 	 * date will get sorted to the week
 	 * @param date
 	 * @param number
@@ -30,6 +30,15 @@ public class BudgetTableData {
 			oldValue = actualMap.get(sunday);
 		}
 		actualMap.put(sunday, number + oldValue);
+	}
+
+	public double getDataWeekDouble(LocalDate date) {
+		LocalDate sunday = date.minusDays(date.getDayOfWeek().getValue() % 7);
+		double returnVal = 0.0;
+		if (actualMap.containsKey(sunday)) {
+			returnVal = actualMap.get(sunday).doubleValue();
+		}
+		return returnVal;
 	}
 
 	public String getDataWeek(LocalDate date) {

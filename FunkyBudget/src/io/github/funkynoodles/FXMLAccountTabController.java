@@ -310,11 +310,6 @@ public class FXMLAccountTabController {
                 System.out.println("Committed: " + datePicker.getValue().toString());
                 commitEdit(datePicker.getValue().toString());
             });
-//            datePicker.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-//                if (!newValue) {
-//                    commitEdit(Date.from(datePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
-//                }
-//            });
         }
 
         private LocalDate getDate() {
