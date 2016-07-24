@@ -48,9 +48,11 @@ public class Asset {
 			observableTransferField.add(tf);
 			return;
 		}else{
-			tf.setCurrentBalance(transferField.get(transferField.size() - 1).getCurrentBalance() + tf.getAmount());
+			double newBalance = transferField.get(transferField.size() - 1).getCurrentBalance() + tf.getAmount();
+			System.out.println("NB: " + newBalance);
+			tf.setCurrentBalance(newBalance);
 			for (int i = 0; i < transferField.size(); i++) {
-				if (tf.getDate().isAfter(transferField.get(i).getDate())) {
+				if (!tf.getDate().isBefore(transferField.get(i).getDate())) {
 					continue;
 				}else{
 					transferField.add(i ,tf);
@@ -103,16 +105,7 @@ public class Asset {
 	}
 	public String getBalanceStr(){
 		String str = Double.toString(balance);
-		int eIndex = str.indexOf("E");
-		String eStr = "";
-		if (eIndex != -1) {
-			eStr = str.substring(eIndex);
-		}
-		int decimalIndex = str.indexOf(".");
-		if (str.length() >= decimalIndex + 3) {
-			str = str.substring(0,decimalIndex + 3) + eStr;
-		}
-		return str;
+		return StringUtils.format2Decimals(str);
 	}
 	public void setBalance(double balance) {
 		this.balance = balance;

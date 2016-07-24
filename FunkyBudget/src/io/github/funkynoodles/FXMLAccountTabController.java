@@ -41,7 +41,9 @@ public class FXMLAccountTabController {
 
 	// Add field
 	@FXML private HBox hbox;
+	@FXML private DatePicker datePicker;
 	@FXML private TextField amountText;
+	@FXML private TextField detailsText;
 	@FXML private ComboBox<String> comboBox;
 	@FXML private Button btn;
 
@@ -55,14 +57,16 @@ public class FXMLAccountTabController {
 	@FXML private TableColumn<TransferField, String> balanceCol;
 
 
-
+	/**
+	 *
+	 * @param event
+	 * @return successfully added
+	 */
 	@FXML
-    protected void handleAddButton(final ActionEvent event) {
+    protected boolean handleAddButton(final ActionEvent event) {
 		Scene scene = btn.getScene();
-    	DatePicker datePicker = (DatePicker)hbox.getChildren().get(0);
     	String amountStr = amountText.getText();
-    	TextField detailsTextField = (TextField)hbox.getChildren().get(2);
-    	String details = detailsTextField.getText();
+    	String details = detailsText.getText();
     	double amountNum = 0.0;
     	LocalDate date = datePicker.getValue();
     	String c = comboBox.getValue();
@@ -76,14 +80,16 @@ public class FXMLAccountTabController {
 			errorBox.setHeaderText("Invalid Date");
 			errorBox.setContentText("Please Enter a Valid Date");
 			errorBox.showAndWait();
-			return;
+			datePicker.requestFocus();
+			return false;
     	}catch (NumberFormatException e){
 			Alert errorBox = new Alert(AlertType.ERROR);
 			errorBox.setTitle("Error");
 			errorBox.setHeaderText("Invalid Number");
 			errorBox.setContentText("Please Enter a Valid Number");
 			errorBox.showAndWait();
-			return;
+			amountText.requestFocus();
+			return false;
     	}
     	if(c == null){
     		Alert errorBox = new Alert(AlertType.ERROR);
@@ -91,10 +97,11 @@ public class FXMLAccountTabController {
 			errorBox.setHeaderText("Invalid Category");
 			errorBox.setContentText("Please Select a Category");
 			errorBox.showAndWait();
-			return;
+			comboBox.requestFocus();
+			return false;
     	}
     	amountText.clear();
-    	detailsTextField.clear();
+    	detailsText.clear();
 
     	TransferField tf = new TransferField(date, amountNum, details, EnumUtils.categoryMap.inverse().get(c));
     	Asset asset;
@@ -132,6 +139,7 @@ public class FXMLAccountTabController {
 		// Refresh table workaround
 		tableView.setItems(asset.getObservableTransferField());
 		Main.changed = true;
+		return true;
     }
 
 	@FXML
@@ -139,7 +147,10 @@ public class FXMLAccountTabController {
 		if (event instanceof KeyEvent)
 		{
 			final KeyEvent keyEvent = (KeyEvent) event;
-			if (keyEvent.isControlDown() && keyEvent.getCode() == KeyCode.ENTER){
+			if (keyEvent.getCode() == KeyCode.ENTER){
+				if (handleAddButton(null)) {
+					datePicker.requestFocus();
+				}
 			}
 		}
 	}
@@ -307,7 +318,6 @@ public class FXMLAccountTabController {
             datePicker = new DatePicker(getDate());
             datePicker.setMinWidth(this.getWidth() - this.getGraphicTextGap() * 2);
             datePicker.setOnAction((e) -> {
-                System.out.println("Committed: " + datePicker.getValue().toString());
                 commitEdit(datePicker.getValue().toString());
             });
         }

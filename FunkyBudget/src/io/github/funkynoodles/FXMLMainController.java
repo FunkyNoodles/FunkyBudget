@@ -24,6 +24,7 @@ import javafx.stage.Stage;
 public class FXMLMainController {
 
 	private int graphOpenedCount = 0;
+	private int budgetOpenedCount = 0;
 
 	@FXML private TabPane tabPane;
 
@@ -66,7 +67,7 @@ public class FXMLMainController {
 
     @FXML
     protected void handleReportBudget(){
-    	Tab newTab = new Tab("Budget " + Integer.toString(++graphOpenedCount));
+    	Tab newTab = new Tab("Budget " + Integer.toString(++budgetOpenedCount));
     	SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
     	try {
     		VBox tabContent = (VBox)FXMLLoader.load(getClass().getResource("fxml_budget_tab.fxml"));

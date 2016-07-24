@@ -33,20 +33,7 @@ public class TransferField implements Comparable<TransferField>, Comparator<Tran
 		this.detail = detail;
 		detailStr.setValue(detail);
 		this.setAmount(amountNum);
-		String amountString = Double.toString(amountNum);
-		int decimalIndex = amountString.indexOf(".");
-
-		// Handle when the number is too big and in exponential form
-		// I wish I had enough money that could be expressed in exponential form
-		int eIndex = amountString.indexOf("E");
-		String eStr = "";
-		if (eIndex != -1) {
-			eStr = amountString.substring(eIndex);
-		}
-		if (amountString.length() >= decimalIndex + 3) {
-			amountString = amountString.substring(0,decimalIndex + 3) + eStr;;
-		}
-		amountStr.setValue(amountString);
+		amountStr.setValue(StringUtils.format2Decimals(amountNum));
 		setCategory(cat);
 		categoryStr.setValue(EnumUtils.categoryMap.get(cat));
 		setCurrentBalance(cb);
@@ -67,7 +54,6 @@ public class TransferField implements Comparable<TransferField>, Comparator<Tran
 
 	public void setAmount(double amount) {
 		this.amount = amount;
-		setAmountStr(Double.toString(amount));
 	}
 	public String getDetail() {
 		return detail;
@@ -106,21 +92,8 @@ public class TransferField implements Comparable<TransferField>, Comparator<Tran
 		this.currentBalance = currentBalance;
 	}
 	public String getBalanceStr() {
-		String str = balanceStr.get();
-		str = Double.toString(currentBalance);
-		int eIndex = str.indexOf("E");
-		String eStr = "";
-		if (eIndex != -1) {
-			eStr = str.substring(eIndex);
-		}
-		int decimalIndex = str.indexOf(".");
-		if (str.length() >= decimalIndex + 3) {
-			str = str.substring(0,decimalIndex + 3) + eStr;
-		}
-		return str;
-	}
-	public void setBalanceStr(String balanceStr) {
-		this.balanceStr.set(balanceStr);
+		String str = Double.toString(currentBalance);
+		return StringUtils.format2Decimals(str);
 	}
 	@Override
 	public int compareTo(TransferField o) {
@@ -132,19 +105,7 @@ public class TransferField implements Comparable<TransferField>, Comparator<Tran
 	}
 	public String getAmountStr() {
 		String str = amountStr.get();
-		int eIndex = str.indexOf("E");
-		String eStr = "";
-		if (eIndex != -1) {
-			eStr = str.substring(eIndex);
-		}
-		int decimalIndex = str.indexOf(".");
-		if (str.length() >= decimalIndex + 3) {
-			str = str.substring(0,decimalIndex + 3) + eStr;
-		}
-		return str;
-	}
-	public void setAmountStr(String amountStr) {
-		this.amountStr.set(amountStr);
+		return StringUtils.format2Decimals(str);
 	}
 	public void setAmountStr(SimpleStringProperty amountStr) {
 		this.amountStr = amountStr;
