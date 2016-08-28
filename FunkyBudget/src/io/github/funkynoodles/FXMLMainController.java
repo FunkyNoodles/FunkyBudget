@@ -111,6 +111,15 @@ public class FXMLMainController {
     }
 
     @FXML
+    protected void handleSaveAs(){
+    	String tmpWorkingFileLocation = Main.workingFileLocation;
+    	Main.workingFileLocation = "";
+    	if (!Main.saveAll()) {
+    		Main.workingFileLocation = tmpWorkingFileLocation;
+		}
+    }
+
+    @FXML
     private void handleKeyInput(final InputEvent event)
     {
        if (event instanceof KeyEvent)
@@ -120,6 +129,25 @@ public class FXMLMainController {
           {
         	  Main.exit();
           }
+          if (keyEvent.isControlDown() && keyEvent.isShiftDown() && keyEvent.getCode() == KeyCode.T){
+        	  Main.readCSVfromGnuCash("C:/Users/Louis/Desktop/test.csv");
+          }
        }
+    }
+
+    @FXML
+    private void handleReadGnuCashransactionCSV() {
+    	Stage readStage = new Stage();
+    	readStage.setTitle("Import from GnuCash Transactions CSV");
+    	Scene scene = tabPane.getScene();
+    	try {
+    		VBox readRoot = (VBox)FXMLLoader.load(getClass().getResource("fxml_read_gnucash_trans_csv.fxml"));
+    		readStage.setScene(new Scene(readRoot));
+    		readStage.initOwner(scene.getWindow());
+    		readStage.showAndWait();
+    		readStage.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
     }
 }

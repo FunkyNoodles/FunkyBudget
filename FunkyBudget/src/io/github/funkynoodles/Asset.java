@@ -49,7 +49,6 @@ public class Asset {
 			return;
 		}else{
 			double newBalance = transferField.get(transferField.size() - 1).getCurrentBalance() + tf.getAmount();
-			System.out.println("NB: " + newBalance);
 			tf.setCurrentBalance(newBalance);
 			for (int i = 0; i < transferField.size(); i++) {
 				if (!tf.getDate().isBefore(transferField.get(i).getDate())) {

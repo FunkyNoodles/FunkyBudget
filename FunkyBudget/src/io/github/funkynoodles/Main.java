@@ -1,14 +1,18 @@
 package io.github.funkynoodles;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.opencsv.CSVReader;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -41,7 +45,7 @@ public class Main extends Application{
 
 	public static int findAssetIndexByName(String name){
 		for (int i = 0; i < assets.size(); i++) {
-			if (assets.getAssetsList().get(i).getName() == name) {
+			if (assets.getAssetsList().get(i).getName().equals(name)) {
 				return i;
 			}
 		}
@@ -249,4 +253,118 @@ public class Main extends Application{
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
+
+	public static boolean readCSVfromGnuCash(String fileName){
+
+		Scene rootScene = primaryStage.getScene();
+		VBox assetVBox = (VBox)rootScene.lookup("#assetVBox");
+		TabPane tabPane = (TabPane) rootScene.lookup("#tabPane");
+
+		FileReader file = null;
+
+		try {
+			file = new FileReader(fileName);
+		} catch (FileNotFoundException e) {
+			return false;
+		}
+		CSVReader reader = new CSVReader(file);
+		String[] nextLine;
+		int lineNum = 0;
+		try {
+			while((nextLine = reader.readNext()) != null){
+				++lineNum;
+				if (lineNum % 3 != 2) {
+					continue;
+				}
+				//System.out.println(nextLine[1]);
+				String dateText = nextLine[0];
+				String assetName = nextLine[1];
+				String detail = nextLine[3];
+				String catString = nextLine[6];
+				String toString = nextLine[12];
+				String fromString = nextLine[13];
+				Asset asset = null;
+				int idx = findAssetIndexByName(assetName);
+
+				if (idx < 0) {
+					asset = new Asset(assetName, AssetType.BANK_CHECKINGS);
+					assets.insert(asset);
+
+					HBox assetField = (HBox)FXMLLoader.load(Main.class.getResource("fxml_account_field.fxml"));
+		    		((Label)assetField.getChildren().get(0)).setText(assetName);
+		    		((TextField)assetField.getChildren().get(1)).setText("0.00");
+					assetVBox.getChildren().add(assetVBox.getChildren().size() - 1, assetField);
+				}else{
+					asset = assets.getAssetsList().get(idx);
+				}
+				LocalDate date = LocalDate.parse(dateText, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+
+				toString = toString.replace(",", "");
+				if (toString.contains("(")) {
+					toString = toString.replace("(", "");
+					toString = toString.replace(")", "");
+					toString = "-" + toString;
+				}
+				fromString = fromString.replace(",", "");
+				if (fromString.contains("(")) {
+					fromString = fromString.replace("(", "");
+					fromString = fromString.replace(")", "");
+					fromString = "-" + fromString;
+				}
+
+				double toNum = 0;
+				if (!toString.equals("")) {
+					toNum = Double.parseDouble(toString);
+				}
+				double fromNum = 0;
+				if (!fromString.equals("")) {
+					fromNum = Double.parseDouble(toString);
+				}
+				//System.out.println(toNum);
+				TransferField tf = new TransferField(date, toNum - fromNum, detail, Category.EXPENSE_AUTO_FEES);
+				asset.insert(tf);
+				// C:/Users/Louis/Desktop/000000.csv
+			}
+			// Update balance on home tab and top
+			Tab tabAsset = null;
+			for (int i = 0; i < tabPane.getTabs().size(); i++) {
+				if(tabPane.getTabs().get(i).getId().compareTo("rootTabAsset") == 0){
+					tabAsset = tabPane.getTabs().get(i);
+					break;
+				}
+			}
+			VBox rootTabVBox = (VBox)tabAsset.getContent();
+			HBox accountFieldHBox = null;
+			Label accountFieldLabel = null;
+			TextField accountFieldTextField = null;
+
+			for (int i = 1; i < rootTabVBox.getChildren().size() - 1; i++) {
+				accountFieldHBox = (HBox)rootTabVBox.getChildren().get(i);
+				accountFieldLabel = (Label)accountFieldHBox.getChildren().get(0);
+				String assetName = accountFieldLabel.getText();
+				Asset asset = assets.getAssetsList().get(findAssetIndexByName(assetName));
+				asset.updateBalance();
+				accountFieldTextField = (TextField) accountFieldHBox.getChildren().get(1);
+				accountFieldTextField.setText(asset.getBalanceStr());
+			}
+			// The only way to update the GUI I can think of
+			// Maybe use runlater, Task, or another thread to do this function
+			primaryStage.hide();
+			primaryStage.show();
+		} catch (IOException e) {
+			return false;
+		}
+		return true;
+	}
+
+	public static class ReadGnuCashRunnable implements Runnable {
+
+		String fileName;
+		public ReadGnuCashRunnable(String fileName){
+			this.fileName = fileName;
+		}
+	    public void run(){
+
+	    }
+	  }
 }
