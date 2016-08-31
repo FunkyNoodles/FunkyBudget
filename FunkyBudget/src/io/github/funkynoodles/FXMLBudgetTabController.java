@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -25,7 +27,7 @@ public class FXMLBudgetTabController {
 	@FXML private ComboBox<String> periodComboBox;
 	@FXML private ComboBox<String> scaleComboBox;
 
-	final private TreeItem<BudgetTableData> root = new TreeItem<>(new BudgetTableData("Budget Report"));
+	private TreeItem<BudgetTableData> root = new TreeItem<>(new BudgetTableData("Budget Report", Reference.BUDGET_TAB_SCALE_WEEKLY));
 	private TreeItem<BudgetTableData> assetItems  = new TreeItem<>();
 	private TreeItem<BudgetTableData> incomeItems  = new TreeItem<>();
 	private TreeItem<BudgetTableData> expenseItems  = new TreeItem<>();
@@ -34,6 +36,7 @@ public class FXMLBudgetTabController {
 	private List<BudgetTableData> expenseList = new ArrayList<>();
 
 	private void createBudgetTableData(String period, String scale){
+
 		// Get correct dates
 		LocalDate nowDate = LocalDate.now();
 		LocalDate fromDate;
@@ -44,19 +47,18 @@ public class FXMLBudgetTabController {
 		case Reference.BUDGET_TAB_PAST_24_WEEKS:
 			fromDate = nowDate.minusWeeks(24);
 			break;
-		case Reference.BUDGET_TAB_PAST_48_WEEKS:
-			fromDate = nowDate.minusWeeks(48);
-			break;
 		case Reference.BUDGET_TAB_PAST_YEAR:
 			fromDate = nowDate.minusYears(1);
 			break;
 		case Reference.BUDGET_TAB_PAST_2_YEARS:
 			fromDate = nowDate.minusYears(2);
+			break;
 		default:
 			fromDate = nowDate.minusWeeks(12);
 			break;
 		}
-		// Refine start of the period to a sunday
+
+		// Refine start of the period to a Sunday
 		DayOfWeek week = fromDate.getDayOfWeek();
 		fromDate = fromDate.minusDays(week.getValue() % 7);
 
@@ -68,12 +70,12 @@ public class FXMLBudgetTabController {
 			if (cStr.contains("Income:")) {
 				String incomeStr = EnumUtils.getGeneralCategory(cStr);
 				if (!incomeMap.containsKey(incomeStr)) {
-					incomeMap.put(incomeStr, new BudgetTableData(incomeStr));
+					incomeMap.put(incomeStr, new BudgetTableData(incomeStr, scale));
 				}
 			}else if (cStr.contains("Expense:")) {
 				String expenseStr = EnumUtils.getGeneralCategory(cStr);
 				if (!expenseMap.containsKey(expenseStr)) {
-					expenseMap.put(expenseStr, new BudgetTableData(expenseStr));
+					expenseMap.put(expenseStr, new BudgetTableData(expenseStr, scale));
 				}
 			}
 		}
@@ -108,14 +110,13 @@ public class FXMLBudgetTabController {
 		});
 
 		// Sum up values for parent nodes
-		BudgetTableData incomeData = new BudgetTableData("Income");
-		BudgetTableData expensData = new BudgetTableData("Expense");
-
+		BudgetTableData incomeData = new BudgetTableData("Income", scale);
+		BudgetTableData expensData = new BudgetTableData("Expense", scale);
 
 		// Sum up assets
-		BudgetTableData assetData = new BudgetTableData("Assets");
+		BudgetTableData assetData = new BudgetTableData("Assets", scale);
 		for (Asset asset : Main.assets.getAssetsList()) {
-			BudgetTableData data = new BudgetTableData(asset.getName());
+			BudgetTableData data = new BudgetTableData(asset.getName(), scale);
 			// Populate data
 			for (TransferField tf : asset.getTransferField()) {
 				if (DateUtils.isBetweenDatesInclusive(tf.getDate(), fromDate, nowDate)) {
@@ -125,31 +126,52 @@ public class FXMLBudgetTabController {
 			assetItems.getChildren().add(new TreeItem<>(data));
 		}
 
-		for (LocalDate weekIter = fromDate; weekIter.isBefore(nowDate); weekIter = weekIter.plusWeeks(1)) {
+		LocalDate dateIter = fromDate;
+		while (dateIter.isBefore(nowDate)) {
+
 			// Asset items
 			for (TreeItem<BudgetTableData> item : assetItems.getChildren()) {
 				BudgetTableData data = item.getValue();
-				double amount = data.getDataWeekDouble(weekIter);
-				if (amount == 0.0) {
-					assetData.add(weekIter, amount);
+				double amount = data.getDataDouble(dateIter);
+				if (amount != 0.0) {
+					assetData.add(dateIter, amount);
 				}
 			}
 			// Income items
 			for (TreeItem<BudgetTableData> item : incomeItems.getChildren()) {
 				BudgetTableData data = item.getValue();
-				double amount = data.getDataWeekDouble(weekIter);
+				double amount = data.getDataDouble(dateIter);
 				if (amount != 0.0) {
-					incomeData.add(weekIter, amount);
+					incomeData.add(dateIter, amount);
 				}
 			}
 			// Expense items
 			for (TreeItem<BudgetTableData> item : expenseItems.getChildren()) {
 				BudgetTableData data = item.getValue();
-				double amount = data.getDataWeekDouble(weekIter);
+				double amount = data.getDataDouble(dateIter);
 				if (amount != 0.0) {
-					expensData.add(weekIter, amount);
+					expensData.add(dateIter, amount);
 				}
 			}
+
+			// Use correct scale to iterate
+			switch (scale) {
+			case Reference.BUDGET_TAB_SCALE_WEEKLY:
+				dateIter = dateIter.plusWeeks(1);
+				break;
+			case Reference.BUDGET_TAB_SCALE_MONTHLY:
+				dateIter = dateIter.plusMonths(1);
+				break;
+			case Reference.BUDGET_TAB_SCALE_YEARLY:
+				dateIter = dateIter.plusYears(1);
+				break;
+			default:
+				dateIter = dateIter.plusWeeks(1);
+				break;
+			}
+		}
+		for (LocalDate weekIter = fromDate; weekIter.isBefore(nowDate); weekIter = weekIter.plusWeeks(1)) {
+
 		}
 
 		incomeItems.setValue(incomeData);
@@ -162,17 +184,50 @@ public class FXMLBudgetTabController {
 				(TreeTableColumn.CellDataFeatures<BudgetTableData, String> param) ->
         		new ReadOnlyStringWrapper(param.getValue().getValue().getCategory())
 				);
-		LocalDate weekIter = fromDate;
-		while (weekIter.isBefore(nowDate)) {
-			TreeTableColumn<BudgetTableData, String> newCol= new TreeTableColumn<>(weekIter.plusDays(3).toString());
-			LocalDate curWeek = weekIter;
+		// Reset dateIter
+		dateIter = fromDate;
+		while (dateIter.isBefore(nowDate)) {
+			TreeTableColumn<BudgetTableData, String> newCol;
+			LocalDate dateIterCopy = dateIter;
+			// Assign and iterate
+			switch (scale) {
+			case Reference.BUDGET_TAB_SCALE_WEEKLY:
+				newCol = new TreeTableColumn<>(dateIterCopy.plusDays(3).toString());
+				dateIter = dateIter.plusWeeks(1);
+				break;
+			case Reference.BUDGET_TAB_SCALE_MONTHLY:
+				String str = dateIterCopy.toString();
+				newCol = new TreeTableColumn<>(str.substring(0, str.length() - 3));
+				dateIter = dateIter.plusMonths(1);
+				break;
+			case Reference.BUDGET_TAB_SCALE_YEARLY:
+				newCol = new TreeTableColumn<>(Integer.toString(dateIterCopy.getYear()));
+				dateIter = dateIter.plusYears(1);
+				break;
+			default:
+				newCol = new TreeTableColumn<>(dateIterCopy.plusDays(3).toString());
+				dateIter = dateIter.plusWeeks(1);
+				break;
+			}
             newCol.setCellValueFactory(
             		(TreeTableColumn.CellDataFeatures<BudgetTableData, String> param) ->
-            		new ReadOnlyStringWrapper(param.getValue().getValue().getDataWeek(curWeek))
+            		new ReadOnlyStringWrapper(param.getValue().getValue().getData(dateIterCopy))
             );
             treeTableView.getColumns().add(newCol);
-            weekIter = weekIter.plusWeeks(1);
 		}
+	}
+
+	private void clearBudgetTable(){
+		// Clear every column except the first one
+		int columnSize = treeTableView.getColumns().size();
+		for (int i = 1; i < columnSize; i++) {
+			treeTableView.getColumns().remove(1);
+		}
+		assetItems.getChildren().clear();
+		incomeItems.getChildren().clear();
+		expenseItems.getChildren().clear();
+		incomeList.clear();
+		expenseList.clear();
 	}
 
 	@FXML
@@ -180,17 +235,36 @@ public class FXMLBudgetTabController {
 		ObservableList<String> periodList = FXCollections.observableArrayList(
 				Reference.BUDGET_TAB_PAST_12_WEEKS,
 				Reference.BUDGET_TAB_PAST_24_WEEKS,
-				Reference.BUDGET_TAB_PAST_48_WEEKS,
 				Reference.BUDGET_TAB_PAST_YEAR,
 				Reference.BUDGET_TAB_PAST_2_YEARS);
 		periodComboBox.setItems(periodList);
 		periodComboBox.setValue(Reference.BUDGET_TAB_PAST_12_WEEKS);
+		periodComboBox.valueProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				if (oldValue.equals(newValue)) {
+					return;
+				}
+				clearBudgetTable();
+				createBudgetTableData(newValue, scaleComboBox.getValue());
+			}
+		});
 		ObservableList<String> scaleList = FXCollections.observableArrayList(
 				Reference.BUDGET_TAB_SCALE_WEEKLY,
 				Reference.BUDGET_TAB_SCALE_MONTHLY,
 				Reference.BUDGET_TAB_SCALE_YEARLY);
 		scaleComboBox.setItems(scaleList);
 		scaleComboBox.setValue(Reference.BUDGET_TAB_SCALE_WEEKLY);
+		scaleComboBox.valueProperty().addListener(new ChangeListener<String>(){
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				if (newValue.equals(oldValue)) {
+					return;
+				}
+				clearBudgetTable();
+				createBudgetTableData(periodComboBox.getValue(), newValue);
+			}
+		});
 
 		root.setExpanded(true);
 		assetItems.setExpanded(true);

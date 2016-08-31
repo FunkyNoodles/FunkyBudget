@@ -23,7 +23,6 @@ public class Reference {
 
 	public static final String BUDGET_TAB_PAST_12_WEEKS = "Past 12 Weeks";
 	public static final String BUDGET_TAB_PAST_24_WEEKS = "Past 24 Weeks";
-	public static final String BUDGET_TAB_PAST_48_WEEKS = "Past 48 Weeks";
 	public static final String BUDGET_TAB_PAST_YEAR = "Past Year";
 	public static final String BUDGET_TAB_PAST_2_YEARS = "Past 2 Years";
 
