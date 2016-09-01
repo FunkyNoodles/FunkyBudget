@@ -86,7 +86,6 @@ public class Main extends Application{
 			erroBox.setHeaderText("Error opening file");
 			erroBox.setContentText("Please try again");
 			erroBox.showAndWait();
-			e.printStackTrace();
 			return false;
 		}
 		TabPane tabPane = (TabPane) primaryStage.getScene().lookup("#tabPane");
@@ -265,8 +264,14 @@ public class Main extends Application{
 		try {
 			file = new FileReader(fileName);
 		} catch (FileNotFoundException e) {
+			Alert erroBox = new Alert(AlertType.ERROR);
+			erroBox.setTitle(Reference.NAME);
+			erroBox.setHeaderText("Error opening file");
+			erroBox.setContentText("Please try again");
+			erroBox.showAndWait();
 			return false;
 		}
+		@SuppressWarnings("resource")
 		CSVReader reader = new CSVReader(file);
 		String[] nextLine;
 		int lineNum = 0;
@@ -276,7 +281,6 @@ public class Main extends Application{
 				if (lineNum % 3 != 2) {
 					continue;
 				}
-				//System.out.println(nextLine[1]);
 				String dateText = nextLine[0];
 				String assetName = nextLine[1];
 				String detail = nextLine[3];
@@ -351,7 +355,12 @@ public class Main extends Application{
 			// Maybe use runlater, Task, or another thread to do this function
 			primaryStage.hide();
 			primaryStage.show();
-		} catch (IOException e) {
+		} catch (Exception e) {
+			Alert erroBox = new Alert(AlertType.ERROR);
+			erroBox.setTitle(Reference.NAME);
+			erroBox.setHeaderText("Error opening file");
+			erroBox.setContentText("Please try again");
+			erroBox.showAndWait();
 			return false;
 		}
 		return true;

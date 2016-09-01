@@ -12,6 +12,7 @@
          <children>
             <Label prefHeight="31.0" text="File:" />
             <TextField fx:id="filePath" />
+            <Button fx:id="browseButton" mnemonicParsing="false" onAction="#handleBrowseButton" text="..." />
          </children>
       </HBox>
       <HBox alignment="TOP_CENTER" spacing="10.0">
