@@ -1,92 +1,98 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.*?>
-<?import javafx.geometry.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
-<?import java.lang.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.layout.BorderPane?>
-
-<BorderPane fx:id="borderPane" prefHeight="700.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.funkynoodles.FXMLChartTabController">
-   <padding>
-      	<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-  </padding>
-   <top>
-      <HBox alignment="TOP_CENTER" prefWidth="200.0" spacing="10.0" styleClass="border-pane" stylesheets="@stylesheet.css" BorderPane.alignment="CENTER">
-         <children>
-            <Label prefHeight="31.0" text="Period" />
-            <ComboBox fx:id="periodComboBox" prefWidth="150.0" />
-            <Label fx:id="fromLabel" prefHeight="31.0" text="From" visible="false" />
-            <DatePicker fx:id="fromDatePicker" visible="false" />
-            <Label fx:id="toLabel" prefHeight="31.0" text="To" visible="false" />
-            <DatePicker fx:id="toDatePicker" visible="false" />
-            <Label fx:id="invalidDateLabel" prefHeight="31.0" text="Invalid Dates Order!" textFill="#d00000" visible="false" />
-         </children>
-         <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </padding>
-      </HBox>
-   </top>
-   <left>
-      <VBox alignment="TOP_CENTER" spacing="10.0" styleClass="border-pane" stylesheets="@stylesheet.css" BorderPane.alignment="TOP_CENTER">
-         <children>
-            <Label text="Chart Settings">
-               <font>
-                  <Font size="24.0" />
-               </font>
-            </Label>
-            <HBox alignment="CENTER" spacing="10.0">
-               <children>
-                  <VBox spacing="10.0">
-                     <children>
-                        <Label prefHeight="31.0" text="Asset" />
-                        <Label prefHeight="31.0" text="Chart Type" />
-                     </children>
-                  </VBox>
-                  <VBox spacing="10.0">
-                     <children>
-                        <ComboBox fx:id="assetComboBox" prefWidth="150.0" />
-                        <ComboBox fx:id="chartTypeComboBox" prefWidth="150.0" />
-                     </children>
-                  </VBox>
-               </children>
-            </HBox>
-            <Button fx:id="generateButton" mnemonicParsing="false" onAction="#handleGenerateButton" text="Generate" />
-            <Separator prefWidth="200.0" />
-            <HBox alignment="TOP_CENTER">
-               <children>
-                  <Label text="Chart Info" />
-               </children>
-            </HBox>
-            <GridPane alignment="CENTER">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                  <Label text="Asset" GridPane.halignment="CENTER" />
-                  <Label fx:id="infoAssetSelectedLabel" alignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-                  <Label text="From" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                  <Label fx:id="infoFromDateLabel" alignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                  <Label alignment="CENTER" text="To" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                  <Label fx:id="infoToDateLabel" alignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                  <Label text="X-Axis Scale" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-                  <Label fx:id="infoXScaleLabel" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-               </children>
-            </GridPane>
-         </children>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-         <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </padding>
-      </VBox>
-   </left>
+<?import javafx.scene.text.Font?>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:id="borderPane" prefHeight="700.0" xmlns="http://javafx.com/javafx/8"
+            fx:controller="io.github.funkynoodles.FXMLChartTabController">
+    <padding>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+    </padding>
+    <top>
+        <HBox alignment="TOP_CENTER" prefWidth="200.0" spacing="10.0" styleClass="border-pane"
+              stylesheets="@stylesheet.css" BorderPane.alignment="CENTER">
+            <children>
+                <Label prefHeight="31.0" text="Period"/>
+                <ComboBox fx:id="periodComboBox" prefWidth="150.0"/>
+                <Label fx:id="fromLabel" prefHeight="31.0" text="From" visible="false"/>
+                <DatePicker fx:id="fromDatePicker" visible="false"/>
+                <Label fx:id="toLabel" prefHeight="31.0" text="To" visible="false"/>
+                <DatePicker fx:id="toDatePicker" visible="false"/>
+                <Label fx:id="invalidDateLabel" prefHeight="31.0" text="Invalid Dates Order!" textFill="#d00000"
+                       visible="false"/>
+            </children>
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+            </padding>
+        </HBox>
+    </top>
+    <left>
+        <VBox alignment="TOP_CENTER" spacing="10.0" styleClass="border-pane" stylesheets="@stylesheet.css"
+              BorderPane.alignment="TOP_CENTER">
+            <children>
+                <Label text="Chart Settings">
+                    <font>
+                        <Font size="24.0"/>
+                    </font>
+                </Label>
+                <HBox alignment="CENTER" spacing="10.0">
+                    <children>
+                        <VBox spacing="10.0">
+                            <children>
+                                <Label prefHeight="31.0" text="Asset"/>
+                                <Label prefHeight="31.0" text="Chart Type"/>
+                            </children>
+                        </VBox>
+                        <VBox spacing="10.0">
+                            <children>
+                                <ComboBox fx:id="assetComboBox" prefWidth="150.0"/>
+                                <ComboBox fx:id="chartTypeComboBox" prefWidth="150.0"/>
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+                <Button fx:id="generateButton" mnemonicParsing="false" onAction="#handleGenerateButton"
+                        text="Generate"/>
+                <Separator prefWidth="200.0"/>
+                <HBox alignment="TOP_CENTER">
+                    <children>
+                        <Label text="Chart Info"/>
+                    </children>
+                </HBox>
+                <GridPane alignment="CENTER">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                    </rowConstraints>
+                    <children>
+                        <Label text="Asset" GridPane.halignment="CENTER"/>
+                        <Label fx:id="infoAssetSelectedLabel" alignment="CENTER" GridPane.columnIndex="1"
+                               GridPane.halignment="CENTER"/>
+                        <Label text="From" GridPane.halignment="CENTER" GridPane.rowIndex="1"/>
+                        <Label fx:id="infoFromDateLabel" alignment="CENTER" GridPane.columnIndex="1"
+                               GridPane.halignment="CENTER" GridPane.rowIndex="1"/>
+                        <Label alignment="CENTER" text="To" GridPane.halignment="CENTER" GridPane.rowIndex="2"/>
+                        <Label fx:id="infoToDateLabel" alignment="CENTER" GridPane.columnIndex="1"
+                               GridPane.halignment="CENTER" GridPane.rowIndex="2"/>
+                        <Label text="X-Axis Scale" GridPane.halignment="CENTER" GridPane.rowIndex="3"/>
+                        <Label fx:id="infoXScaleLabel" GridPane.columnIndex="1" GridPane.halignment="CENTER"
+                               GridPane.rowIndex="3"/>
+                    </children>
+                </GridPane>
+            </children>
+            <opaqueInsets>
+                <Insets/>
+            </opaqueInsets>
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+            </padding>
+        </VBox>
+    </left>
 </BorderPane>

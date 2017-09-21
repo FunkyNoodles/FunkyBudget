@@ -1,90 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.input.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.GridPane?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
-
-<VBox onKeyPressed="#handleKeyInput" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.funkynoodles.FXMLMainController">
-   <children>
-       <MenuBar fx:id="menuBar">
-       	<menus>
-       		<Menu text="File">
-               <items>
-                  <MenuItem accelerator="Ctrl N" text="New" />
-                  <MenuItem accelerator="Ctrl + O" onAction="#handleOpenFile" text="Open" />
-                  <MenuItem accelerator="Ctrl + S" onAction="#handleSaveFile" text="Save" />
-                  <MenuItem accelerator="Ctrl + Shift + S" onAction="#handleSaveAs" text="Save As" />
-                  <SeparatorMenuItem />
-                  <Menu mnemonicParsing="false" text="Import">
+<?import javafx.scene.control.*?>
+<?import javafx.scene.input.KeyCodeCombination?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" onKeyPressed="#handleKeyInput" xmlns="http://javafx.com/javafx/8"
+      fx:controller="io.github.funkynoodles.FXMLMainController">
+    <children>
+        <MenuBar fx:id="menuBar">
+            <menus>
+                <Menu text="File">
                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#handleReadGnuCashransactionCSV" text="GnuCash Transaction CSV..." />
+                        <MenuItem accelerator="Ctrl N" text="New"/>
+                        <MenuItem accelerator="Ctrl + O" onAction="#handleOpenFile" text="Open"/>
+                        <MenuItem accelerator="Ctrl + S" onAction="#handleSaveFile" text="Save"/>
+                        <MenuItem accelerator="Ctrl + Shift + S" onAction="#handleSaveAs" text="Save As"/>
+                        <SeparatorMenuItem/>
+                        <Menu mnemonicParsing="false" text="Import">
+                            <items>
+                                <MenuItem mnemonicParsing="false" onAction="#handleReadGnuCashransactionCSV"
+                                          text="GnuCash Transaction CSV..."/>
+                            </items>
+                        </Menu>
+                        <SeparatorMenuItem mnemonicParsing="false"/>
+                        <MenuItem onAction="#handleExitAction" text="Exit"/>
                     </items>
-                  </Menu>
-                  <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem onAction="#handleExitAction" text="Exit" />
-               </items>
-            </Menu>
-            <Menu text="Edit">
-               <items>
-                  <MenuItem text="Copy" />
-                  <MenuItem text="Cut" />
-                  <MenuItem text="Paste" />
-               </items>
-            </Menu>
-            <Menu mnemonicParsing="false" text="Reports">
-              <items>
-                <MenuItem mnemonicParsing="false" onAction="#handleReportGraph" text="Graphs">
-                     <accelerator>
-                        <KeyCodeCombination alt="UP" code="G" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                     </accelerator></MenuItem>
-                  <MenuItem mnemonicParsing="false" onAction="#handleReportBudget" text="Budget">
-                     <accelerator>
-                        <KeyCodeCombination alt="UP" code="B" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                     </accelerator>
-                  </MenuItem>
-              </items>
-            </Menu>
-            <Menu text="Help">
-               <items>
-                  <MenuItem disable="true" text="Search" />
-                  <MenuItem text="Online Manual" visible="false" />
-                  <SeparatorMenuItem />
-                  <MenuItem text="About" />
-               </items>
-            </Menu>
-       	</menus>
-       </MenuBar>
+                </Menu>
+                <Menu text="Edit">
+                    <items>
+                        <MenuItem text="Copy"/>
+                        <MenuItem text="Cut"/>
+                        <MenuItem text="Paste"/>
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Reports">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#handleReportGraph" text="Graphs">
+                            <accelerator>
+                                <KeyCodeCombination alt="UP" code="G" control="DOWN" meta="UP" shift="UP"
+                                                    shortcut="UP"/>
+                            </accelerator>
+                        </MenuItem>
+                        <MenuItem mnemonicParsing="false" onAction="#handleReportBudget" text="Budget">
+                            <accelerator>
+                                <KeyCodeCombination alt="UP" code="B" control="DOWN" meta="UP" shift="UP"
+                                                    shortcut="UP"/>
+                            </accelerator>
+                        </MenuItem>
+                    </items>
+                </Menu>
+                <Menu text="Help">
+                    <items>
+                        <MenuItem disable="true" text="Search"/>
+                        <MenuItem text="Online Manual" visible="false"/>
+                        <SeparatorMenuItem/>
+                        <MenuItem text="About"/>
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
 
-       <TabPane fx:id="tabPane">
+        <TabPane fx:id="tabPane">
 
-   		<tabs>
-   			<Tab fx:id="rootTabAsset" closable="false" text="Assets">
-               <content>
-                  <VBox fx:id="assetVBox" spacing="10.0">
-                  	<padding>
-      					<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-      				</padding>
-                     <children>
-                        <Label text="Assets">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-                        <Button fx:id="newAssetButton" mnemonicParsing="false" onAction="#handleNewAssetButton" prefHeight="31.0" prefWidth="125.0" text="New..." />
-                     </children></VBox>
-               </content>
-            </Tab>
-   		</tabs>
-       </TabPane>
-   </children>
+            <tabs>
+                <Tab fx:id="rootTabAsset" closable="false" text="Assets">
+                    <content>
+                        <VBox fx:id="assetVBox" spacing="10.0">
+                            <padding>
+                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                            </padding>
+                            <children>
+                                <Label text="Assets">
+                                    <font>
+                                        <Font size="20.0"/>
+                                    </font>
+                                </Label>
+                                <Button fx:id="newAssetButton" mnemonicParsing="false" onAction="#handleNewAssetButton"
+                                        prefHeight="31.0" prefWidth="125.0" text="New..."/>
+                            </children>
+                        </VBox>
+                    </content>
+                </Tab>
+            </tabs>
+        </TabPane>
+    </children>
 
 
 </VBox>

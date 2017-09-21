@@ -1,43 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.*?>
-<?import javafx.geometry.*?>
-<?import java.lang.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.layout.VBox?>
-
-<VBox fx:id="vBox" spacing="10.0" styleClass="border-pane" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.funkynoodles.FXMLExpenseOverTimeAdvancedController">
-   <children>
-      <HBox alignment="TOP_CENTER">
-         <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" text="Advanced">
-               <font>
-                  <Font size="24.0" />
-               </font>
-            </Label>
-         </children>
-      </HBox>
-      <CheckBox fx:id="valueCheckBox" mnemonicParsing="false" onAction="#onValueCheckBoxToggle" text="Display Value" />
-      <HBox spacing="10.0">
-         <children>
-            <Label prefHeight="31.0" text="X-Axis Scale" />
-            <ComboBox prefWidth="150.0" fx:id="xAxisScaleComboBox" />
-         </children>
-      </HBox>
-      <Separator prefWidth="200.0" />
-      <VBox fx:id="dataSetVBox" spacing="10.0">
-         <children>
-            <HBox alignment="TOP_CENTER" spacing="10.0">
-               <children>
-                  <ComboBox fx:id="categoryComboBox" prefWidth="150.0" />
-                  <Button fx:id="newDataSetButton" mnemonicParsing="false" onAction="#handleNewDataSetButton" text="New Series..." />
-               </children>
-            </HBox>
-         </children>
-      </VBox>
-   </children>
-   <padding>
-      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-   </padding>
+<?import javafx.scene.text.Font?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:id="vBox" spacing="10.0" styleClass="border-pane"
+      stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/8"
+      fx:controller="io.github.funkynoodles.FXMLExpenseOverTimeAdvancedController">
+    <children>
+        <HBox alignment="TOP_CENTER">
+            <children>
+                <Label alignment="CENTER" contentDisplay="CENTER" text="Advanced">
+                    <font>
+                        <Font size="24.0"/>
+                    </font>
+                </Label>
+            </children>
+        </HBox>
+        <CheckBox fx:id="valueCheckBox" mnemonicParsing="false" onAction="#onValueCheckBoxToggle" text="Display Value"/>
+        <HBox spacing="10.0">
+            <children>
+                <Label prefHeight="31.0" text="X-Axis Scale"/>
+                <ComboBox prefWidth="150.0" fx:id="xAxisScaleComboBox"/>
+            </children>
+        </HBox>
+        <Separator prefWidth="200.0"/>
+        <VBox fx:id="dataSetVBox" spacing="10.0">
+            <children>
+                <HBox alignment="TOP_CENTER" spacing="10.0">
+                    <children>
+                        <ComboBox fx:id="categoryComboBox" prefWidth="150.0"/>
+                        <Button fx:id="newDataSetButton" mnemonicParsing="false" onAction="#handleNewDataSetButton"
+                                text="New Series..."/>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+    <padding>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+    </padding>
 </VBox>

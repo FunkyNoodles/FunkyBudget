@@ -1,27 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.text.*?>
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
-
-<VBox fx:id="vBox" alignment="TOP_CENTER" spacing="10.0" styleClass="border-pane" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.funkynoodles.FXMLExpensePieChartAdvancedController">
-   <children>
-      <Label alignment="CENTER" contentDisplay="CENTER" text="Advanced">
-         <font>
-            <Font size="24.0" />
-         </font>
-      </Label>
-      <VBox spacing="10.0">
-         <children>
-            <CheckBox fx:id="percentageCheckBox" mnemonicParsing="false" onAction="#onPercentageCheckBoxToggle" text="Display Percentage" />
-            <CheckBox fx:id="valueCheckBox" mnemonicParsing="false" onAction="#onValueCheckBoxToggle" text="Display Value" />
-         </children>
-      </VBox>
-   </children>
-   <padding>
-      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-   </padding>
+<?import javafx.scene.text.Font?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:id="vBox" alignment="TOP_CENTER" spacing="10.0" styleClass="border-pane"
+      stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/8"
+      fx:controller="io.github.funkynoodles.FXMLExpensePieChartAdvancedController">
+    <children>
+        <Label alignment="CENTER" contentDisplay="CENTER" text="Advanced">
+            <font>
+                <Font size="24.0"/>
+            </font>
+        </Label>
+        <VBox spacing="10.0">
+            <children>
+                <CheckBox fx:id="percentageCheckBox" mnemonicParsing="false" onAction="#onPercentageCheckBoxToggle"
+                          text="Display Percentage"/>
+                <CheckBox fx:id="valueCheckBox" mnemonicParsing="false" onAction="#onValueCheckBoxToggle"
+                          text="Display Value"/>
+            </children>
+        </VBox>
+    </children>
+    <padding>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+    </padding>
 </VBox>
