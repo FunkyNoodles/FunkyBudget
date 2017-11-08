@@ -1,5 +1,6 @@
 *.class
 .idea/
+out/
 FunkyBudget.iml
 
 # Mobile Tools for Java (J2ME)

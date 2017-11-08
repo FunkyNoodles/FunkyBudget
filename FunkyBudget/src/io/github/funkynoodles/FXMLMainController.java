@@ -123,7 +123,7 @@ public class FXMLMainController {
                 Main.exit();
             }
             if (keyEvent.isControlDown() && keyEvent.isShiftDown() && keyEvent.getCode() == KeyCode.T) {
-                Main.readCSVfromGnuCash("C:/Users/Louis/Desktop/test.csv");
+                Main.readCSVFromGnuCash("C:/Users/Louis/Desktop/test.csv");
             }
         }
     }

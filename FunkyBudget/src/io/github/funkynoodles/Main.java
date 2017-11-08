@@ -59,7 +59,7 @@ public class Main extends Application {
         }
         Gson gson = new Gson();
         try {
-            SaveAssets saveAssets = new SaveAssets();
+            SaveAssets saveAssets;
             Reader reader = new FileReader(file);
             saveAssets = gson.fromJson(reader, SaveAssets.class);
             Main.assets.getAssetsList().clear();
@@ -70,11 +70,11 @@ public class Main extends Application {
                 return false;
             }
         } catch (Exception e) {
-            Alert erroBox = new Alert(AlertType.ERROR);
-            erroBox.setTitle(Reference.NAME);
-            erroBox.setHeaderText("Error opening file");
-            erroBox.setContentText("Please try again");
-            erroBox.showAndWait();
+            Alert errorBox = new Alert(AlertType.ERROR);
+            errorBox.setTitle(Reference.NAME);
+            errorBox.setHeaderText("Error opening file");
+            errorBox.setContentText("Please try again");
+            errorBox.showAndWait();
             return false;
         }
         TabPane tabPane = (TabPane) primaryStage.getScene().lookup("#tabPane");
@@ -105,7 +105,7 @@ public class Main extends Application {
             String assetName = assets.getAssetsList().get(i).getName();
             String assetBalance = assets.getAssetsList().get(i).getBalanceStr();
             try {
-                HBox assetField = (HBox) FXMLLoader.load(Main.class.getResource("fxml_account_field.fxml"));
+                HBox assetField = FXMLLoader.load(Main.class.getResource("fxml_account_field.fxml"));
                 ((Label) assetField.getChildren().get(0)).setText(assetName);
                 ((TextField) assetField.getChildren().get(1)).setText(assetBalance);
                 rootTabVBox.getChildren().add(rootTabVBox.getChildren().size() - 1, assetField);
@@ -222,7 +222,7 @@ public class Main extends Application {
         return false;
     }
 
-    public static boolean readCSVfromGnuCash(String fileName) {
+    public static boolean readCSVFromGnuCash(String fileName) {
 
         Scene rootScene = primaryStage.getScene();
         VBox assetVBox = (VBox) rootScene.lookup("#assetVBox");

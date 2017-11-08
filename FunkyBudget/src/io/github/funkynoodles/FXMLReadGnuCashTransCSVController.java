@@ -21,7 +21,7 @@ public class FXMLReadGnuCashTransCSVController {
     @FXML
     private void handleImportButton() {
         String fileName = filePath.getText();
-        if (Main.readCSVfromGnuCash(fileName)) {
+        if (Main.readCSVFromGnuCash(fileName)) {
             Stage stage = (Stage) importButton.getScene().getWindow();
             stage.hide();
         }
